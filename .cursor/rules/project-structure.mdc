@@ -1,0 +1,149 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# Static Project Development Guidelines
+
+## Project Purpose
+This workspace contains multiple static, single-page projects designed for integration into existing CMS websites. Each project should be self-contained and optimized for easy CMS deployment.
+
+## Core Development Principles
+
+### 1. Self-Contained Architecture
+- **Single HTML File**: Each project must be contained within a single HTML file with all dependencies embedded
+- **Inline Resources**: CSS, JavaScript, and small assets should be inlined whenever possible
+- **No External Dependencies**: Avoid third-party libraries and frameworks to ensure compatibility and reduce load times
+- **CMS Ready**: Code should be easily copy-pastable into CMS content editors
+
+### 2. Project Structure Standards
+```
+project-name/
+├── index.html          # Main HTML file with everything embedded
+├── scss/              # Source SCSS files for development
+│   └── styles.scss    # Main stylesheet source
+├── css/               # Compiled CSS files
+│   ├── styles.css     # Development version
+│   └── styles.min.css # Production version
+└── images/            # Optimized images (if external references needed)
+```
+
+### 3. CMS Integration and Path Management
+- **Base Path Variable**: Use `@{root}` variable for flexible path configuration
+- **Path Configuration**: 
+  ```scss
+  $root-path: '@{root}' !default;
+  $image-path: '#{$root-path}/images' !default;
+  ```
+- **Runtime Path Replacement**: CMS will replace `@{root}` with actual deployment path
+- **Asset References**: All external resources must use the base path variable
+- **Container Class**: All styles must be contained within a unique project class to prevent conflicts
+
+### 4. CSS Scoping Requirements
+- **Mandatory Container Class**: All CSS rules must be nested under a unique project class
+- **No Global Styles**: Avoid body, html, or universal selectors at root level
+- **Reset Styles**: Include reset styles within the project container class
+- **Example Structure**:
+  ```scss
+  .project-name {
+    // Reset and base styles within container
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    // Base typography and layout
+    font-family: $font-family-base;
+    // ... other base styles
+    
+    // Component styles
+    &__component { }
+  }
+  ```
+
+### 5. HTML Development Standards
+- Use semantic HTML5 elements for better accessibility and SEO
+- Include proper meta tags for mobile responsiveness and SEO
+- Embed CSS directly in `<style>` tags within the `<head>` section
+- Place JavaScript in `<script>` tags at the end of `<body>` or in `<head>` with proper loading attributes
+- Use data attributes for JavaScript selectors instead of classes when possible
+- Include fallbacks for older browsers when using modern CSS/JS features
+- **Container Requirement**: Wrap all content in a unique project class div
+
+### 6. Asset Management
+- **Image Format**: Use PNG/JPG images instead of SVG for better CMS compatibility
+- **Image Optimization**: Compress images for web delivery
+- **Path Structure**: Organize assets in logical folders (images/, fonts/, etc.)
+- **Background Images**: Use CSS background-image with path variables
+- **Inline Images**: Prefer background images over <img> tags for decorative elements
+
+### 7. Performance Optimization
+- Minimize HTTP requests by inlining assets
+- Optimize images and use appropriate formats (WebP with fallbacks)
+- Use CSS minification for production
+- Implement lazy loading for images when beneficial
+- Use efficient CSS selectors and avoid complex nested rules
+
+### 8. CMS Integration Considerations
+- Use relative paths for any external resources with base path variables
+- Avoid conflicts with existing CMS styles by using specific selectors
+- Include version comments in code for tracking
+- Use unique class names and IDs to prevent conflicts
+- Test compatibility with common CMS editors (WordPress, Drupal, etc.)
+- **Namespace Everything**: All CSS classes, IDs, and JavaScript variables must be prefixed with project name
+
+### 9. Code Quality Standards
+- Use consistent indentation (2 spaces)
+- Include helpful comments for complex functionality
+- Use meaningful variable and function names
+- Validate HTML, CSS, and JavaScript before deployment
+- Follow accessibility guidelines (WCAG 2.1 AA minimum)
+
+### 10. Browser Compatibility
+- Support modern browsers (Chrome, Firefox, Safari, Edge)
+- Provide graceful degradation for older browsers
+- Test on mobile devices and tablets
+- Use progressive enhancement approaches
+
+### 11. Documentation Requirements
+- Include inline comments explaining complex logic
+- Document any special installation or integration steps
+- Provide clear variable and configuration options
+- Include browser compatibility notes when relevant
+- Document path configuration requirements for CMS integration
+
+## File Naming Conventions
+- Use lowercase with hyphens for directories and files
+- Use descriptive names that indicate purpose
+- Prefix utility classes with project-specific identifiers
+- Use semantic naming for CSS classes (BEM methodology recommended)
+
+## Development Workflow
+1. Create project structure following the standard template
+2. Set up base path variables and container class
+3. Develop SCSS files for styling (compiled via IDE)
+4. Download images as PNG/JPG from design sources
+5. Write HTML with embedded compiled CSS
+6. Test functionality and compatibility
+7. Optimize and minify for production
+8. Document integration requirements and path configuration
+9. Prepare for CMS deployment with proper namespacing
+
+## Path Configuration Examples
+```scss
+// Development paths (local)
+$root-path: '.' !default;
+
+// Production paths (CMS will replace)
+$root-path: '@{root}' !default;
+
+// Usage in styles
+.project-name {
+  &__hero {
+    background-image: url('#{$root-path}/images/hero-bg.png');
+  }
+}
+```
+
+This approach ensures maximum compatibility and ease of integration while maintaining development efficiency and code quality, with proper path management for different deployment environments.

@@ -1,0 +1,476 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# SCSS Styling Guidelines and Workflow
+
+## SCSS Development Philosophy
+Styles are authored in SCSS for enhanced development experience, then compiled to CSS for production use. The compilation process is handled externally through IDE configuration, allowing for efficient development without build tool complexity.
+
+## File Structure and Organization
+
+### Required CSS Files Structure
+```
+css/
+├── styles.css      # Uncompressed development version
+└── styles.min.css  # Minified production version
+```
+
+### SCSS Source Files Structure  
+```
+scss/
+├── _variables.scss    # Color palette, typography, spacing variables, path variables
+├── _mixins.scss      # Reusable SCSS mixins and functions
+├── _base.scss        # Reset, typography, base element styles
+├── _layout.scss      # Grid systems, containers, positioning
+├── _components.scss  # Individual component styles
+├── _utilities.scss   # Utility classes and helpers
+└── main.scss         # Main file importing all partials
+```
+
+## Path Management and CMS Integration
+
+### Base Path Configuration
+```scss
+// Base Path Variable for CMS Integration
+$root-path: '@{root}' !default;
+$image-path: '#{$root-path}/images' !default;
+$font-path: '#{$root-path}/fonts' !default;
+$asset-path: '#{$root-path}/assets' !default;
+
+// Development override (uncomment for local development)
+// $root-path: '.' !default;
+```
+
+### Asset Path Usage
+```scss
+// Correct usage in styles
+.component {
+  background-image: url('#{$image-path}/hero-bg.png');
+  
+  &::before {
+    content: '';
+    background: url('#{$image-path}/icon.png') no-repeat center;
+  }
+}
+
+// Font loading
+@font-face {
+  font-family: 'CustomFont';
+  src: url('#{$font-path}/custom-font.woff2') format('woff2');
+}
+```
+
+## Container Class Requirements
+
+### Mandatory Project Container
+All styles MUST be contained within a unique project class to prevent conflicts with existing CMS styles:
+
+```scss
+// REQUIRED: All styles within project container
+.project-name {
+  // Reset and base styles within container
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  // Typography base (no global body styles)
+  font-family: $font-family-base;
+  line-height: 1.6;
+  color: $text-color;
+  
+  // Component styles
+  &__component {
+    // Component styles here
+  }
+}
+
+// WRONG: Global styles (will conflict with CMS)
+body {
+  font-family: $font-family-base; // ❌ Never do this
+}
+
+* {
+  box-sizing: border-box; // ❌ Never do this at root level
+}
+```
+
+## SCSS Compilation Workflow
+
+### IDE Configuration Requirements
+- **Live Compilation**: Configure IDE to auto-compile SCSS on file save
+- **Output Locations**: 
+  - Expanded CSS → `css/styles.css`
+  - Compressed CSS → `css/styles.min.css`
+- **Source Maps**: Generate for development debugging (excluded from production)
+- **Error Handling**: Display compilation errors in IDE for immediate feedback
+
+### Compilation Settings
+```scss
+// Recommended compilation settings
+output_style: expanded     // For development CSS
+output_style: compressed   // For production minified CSS
+source_map: true          // Enable for development
+autoprefixer: true        // Add vendor prefixes automatically
+```
+
+## SCSS Coding Standards
+
+### 1. Variable Naming and Organization
+```scss
+// Path variables (must be first)
+$root-path: '@{root}' !default;
+$image-path: '#{$root-path}/images' !default;
+
+// Use semantic naming with consistent prefixes
+$color-primary: #007bff;
+$color-secondary: #6c757d;
+$color-success: #28a745;
+$color-danger: #dc3545;
+
+// Typography variables
+$font-family-base: 'Helvetica Neue', Arial, sans-serif;
+$font-size-base: 1rem;
+$line-height-base: 1.5;
+
+// Spacing system
+$spacer: 1rem;
+$spacers: (
+  0: 0,
+  1: $spacer * 0.25,
+  2: $spacer * 0.5,
+  3: $spacer,
+  4: $spacer * 1.5,
+  5: $spacer * 3
+);
+
+// Breakpoints for responsive design
+$breakpoints: (
+  xs: 0,
+  sm: 576px,
+  md: 768px,
+  lg: 992px,
+  xl: 1200px
+);
+```
+
+### 2. Image and Asset Management
+```scss
+// Image format preferences (PNG/JPG over SVG for CMS compatibility)
+.hero {
+  // Preferred: Background images with path variables
+  background-image: url('#{$image-path}/hero-bg.png');
+  
+  // Icon backgrounds
+  &__icon {
+    background-image: url('#{$image-path}/icon.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+}
+
+// Image optimization classes
+.image {
+  &--responsive {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+  }
+  
+  &--contain {
+    object-fit: contain;
+  }
+  
+  &--hero {
+    width: 1000px;
+    height: 275px;
+    object-fit: cover;
+    
+    @include respond-mobile {
+      width: 100%;
+      height: auto;
+    }
+  }
+}
+```
+
+### 3. Mixin Usage and Best Practices
+```scss
+// Responsive breakpoint mixin
+@mixin respond-to($breakpoint) {
+  @if map-has-key($breakpoints, $breakpoint) {
+    @media (min-width: map-get($breakpoints, $breakpoint)) {
+      @content;
+    }
+  }
+}
+
+// Flexbox centering mixin
+@mixin center-flex {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+// Typography mixin
+@mixin font-style($size, $weight: normal, $line-height: normal) {
+  font-size: $size;
+  font-weight: $weight;
+  line-height: $line-height;
+}
+
+// Background image mixin with path variable
+@mixin bg-image($image-name, $size: cover, $position: center, $repeat: no-repeat) {
+  background-image: url('#{$image-path}/#{$image-name}');
+  background-size: $size;
+  background-position: $position;
+  background-repeat: $repeat;
+}
+```
+
+### 4. BEM Methodology Implementation
+```scss
+// Block (within project container)
+.project-name {
+  &__card {
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    
+    // Element
+    &-header {
+      padding: 1rem;
+      border-bottom: 1px solid #eee;
+      
+      // Element within element
+      &-title {
+        margin: 0;
+        font-size: 1.25rem;
+      }
+    }
+    
+    &-body {
+      padding: 1rem;
+    }
+    
+    // Modifier
+    &--featured {
+      border-color: $color-primary;
+      box-shadow: 0 4px 8px rgba(0,123,255,0.1);
+    }
+    
+    &--large {
+      .project-name__card-header {
+        padding: 1.5rem;
+      }
+    }
+  }
+}
+```
+
+### 5. Nesting Guidelines
+```scss
+// Maximum 3 levels of nesting within project container
+.project-name {
+  &__navigation {
+    background: $color-primary;
+    
+    &-list {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      
+      &-item {
+        display: inline-block;
+        
+        // Avoid deeper nesting
+        a {
+          color: white;
+          text-decoration: none;
+          padding: 0.5rem 1rem;
+          
+          &:hover {
+            background: rgba(white, 0.1);
+          }
+        }
+      }
+    }
+  }
+}
+```
+
+## Production Optimization
+
+### CSS Output Requirements
+- **Development CSS**: Readable, expanded format with comments
+- **Production CSS**: Minified, no comments, optimized file size
+- **Vendor Prefixes**: Automatically added based on browser support requirements
+- **Critical CSS**: Inline critical styles in HTML `<style>` tags
+- **Non-Critical CSS**: Load asynchronously or defer when possible
+
+### Performance Considerations
+```scss
+// Use efficient selectors within container
+.project-name {
+  &__btn { } // Good: BEM class selector
+  
+  // Avoid overly specific selectors
+  // #main .content .btn { } // ❌ Avoid
+  
+  // Minimize use of expensive properties
+  &__element {
+    // Prefer transform over changing layout properties
+    transform: translateX(10px); // Good
+    // margin-left: 10px; // Less efficient for animations
+  }
+  
+  // Use logical properties when possible
+  &__box {
+    margin-inline: auto; // Modern approach
+    padding-block: 1rem; // Logical spacing
+  }
+}
+```
+
+## Integration with HTML
+
+### Linking External CSS Files
+```html
+<!-- Development: Link to expanded CSS -->
+<link rel="stylesheet" href="css/styles.css">
+
+<!-- Production: Link to minified CSS -->
+<link rel="stylesheet" href="css/styles.min.css">
+```
+
+### CMS Integration Requirements
+- **No Inline CSS**: HTML files should NEVER contain `<style>` tags or inline CSS
+- **External CSS Only**: All styles must be in separate CSS files compiled from SCSS
+- **Path Flexibility**: Use `@{root}` variable replacement for CMS deployment
+- **Single Responsibility**: HTML handles structure, SCSS/CSS handles all styling
+
+### HTML Structure Requirements
+```html
+<!-- REQUIRED: Project container wrapper -->
+<div class="project-name">
+  <!-- All project content goes here -->
+  <header class="project-name__header">
+    <!-- Header content -->
+  </header>
+  
+  <main class="project-name__main">
+    <!-- Main content -->
+  </main>
+</div>
+```
+
+### CSS Custom Properties Integration
+```scss
+// Define CSS custom properties within project container
+.project-name {
+  --color-primary: #{$color-primary};
+  --font-size-base: #{$font-size-base};
+  --spacer: #{$spacer};
+  --image-path: #{$image-path};
+  
+  // Use in component styles
+  &__component {
+    color: var(--color-primary);
+    font-size: var(--font-size-base);
+    margin: var(--spacer);
+  }
+}
+```
+
+## Quality Assurance
+
+### Code Validation
+- **SCSS Lint**: Ensure code follows established patterns
+- **CSS Validation**: Validate compiled CSS output
+- **Browser Testing**: Test compiled CSS across target browsers
+- **Performance Testing**: Monitor CSS file size and load times
+- **Container Testing**: Verify all styles are properly scoped
+
+### Maintainability Standards
+- **Documentation**: Comment complex calculations and mixins
+- **Modularity**: Keep styles in logical, reusable modules
+- **Consistency**: Follow established naming conventions
+- **Scalability**: Design styles for easy extension and modification
+- **Path Management**: Document path variable usage and requirements
+
+## Common Patterns and Utilities
+
+### Utility Classes (within project container)
+```scss
+.project-name {
+  // Spacing utilities
+  @each $prop, $abbrev in (margin: m, padding: p) {
+    @each $size, $length in $spacers {
+      &__#{$abbrev}-#{$size} { 
+        #{$prop}: $length !important; 
+      }
+    }
+  }
+  
+  // Display utilities
+  &__d-none { display: none !important; }
+  &__d-block { display: block !important; }
+  &__d-flex { display: flex !important; }
+  
+  // Text utilities
+  &__text-center { text-align: center !important; }
+  &__text-left { text-align: left !important; }
+  &__text-right { text-align: right !important; }
+  
+  // Image utilities
+  &__img-responsive {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+  }
+  
+  &__bg-contain {
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+}
+```
+
+## Asset Format Guidelines
+
+### Image Format Preferences
+1. **PNG**: For images with transparency, icons, graphics
+2. **JPG**: For photographs, complex images without transparency
+3. **Avoid SVG**: For CMS compatibility, use PNG alternatives
+4. **WebP**: Use with PNG/JPG fallbacks for modern browsers
+
+### Image Optimization
+```scss
+// Image loading optimization
+.project-name {
+  &__image {
+    // Lazy loading support
+    &[loading="lazy"] {
+      opacity: 0;
+      transition: opacity 0.3s;
+      
+      &.loaded {
+        opacity: 1;
+      }
+    }
+    
+    // Responsive image sizes
+    &--small { max-width: 200px; }
+    &--medium { max-width: 400px; }
+    &--large { max-width: 800px; }
+    &--full { max-width: 100%; }
+  }
+}
+```
+
+This SCSS workflow ensures efficient development while maintaining production-ready, optimized CSS output suitable for CMS integration with proper path management and container scoping.

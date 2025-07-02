@@ -1,0 +1,602 @@
+// 베이스 경로 변수 (CMS 배포 시 @{root}를 실제 경로로 치환)
+$root-path: '@{root}' !default;
+$image-path: '#{$root-path}/images' !default;
+
+// 개발 환경용 오버라이드 (주석 해제하여 사용)
+// $root-path: '.' !default;
+
+// 색상 변수
+$color-primary: #662583;
+$color-text-primary: #000000;
+$color-text-secondary: #333333;
+$color-text-tertiary: #444444;
+$color-text-quaternary: #666666;
+$color-text-light: #888888;
+$color-background: #ffffff;
+$color-background-light: #f8f8f8;
+$color-background-accent: rgba(102, 37, 131, 0.04);
+$color-border: rgba(0, 0, 0, 0.05);
+$color-border-accent: rgba(0, 0, 0, 0.1);
+
+// 타이포그래피 변수
+$font-family-base: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+$font-size-hero: 42px;
+$font-size-title: 33px;
+$font-size-step: 23px;
+$font-size-subtitle: 20px;
+$font-size-text: 18px;
+$font-size-body: 16px;
+$font-size-small: 14px;
+
+// 간격 변수
+$spacing-xs: 4px;
+$spacing-sm: 8px;
+$spacing-md: 16px;
+$spacing-lg: 20px;
+$spacing-xl: 24px;
+$spacing-2xl: 32px;
+$spacing-3xl: 40px;
+$spacing-4xl: 48px;
+$spacing-5xl: 80px;
+
+// 브레이크포인트
+$breakpoint-mobile: 768px;
+$breakpoint-tablet: 1024px;
+$breakpoint-desktop: 1200px;
+
+// 컨테이너 크기
+$container-max-width: 1000px;
+$container-padding: 20px;
+
+// 믹스인
+@mixin respond-mobile {
+	@media (max-width: $breakpoint-mobile) {
+		@content;
+	}
+}
+
+@mixin respond-tablet {
+	@media (max-width: $breakpoint-tablet) {
+		@content;
+	}
+}
+
+@mixin flex-center {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+@mixin flex-between {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
+@mixin text-ellipsis {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+@mixin shadow-light {
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+@mixin border-radius($size: 8px) {
+	border-radius: $size;
+}
+
+// 동백전 메인 컨테이너 클래스
+.dong100 {
+	// 기본 리셋 및 베이스 스타일
+	* {
+		margin: 0;
+		padding: 0;
+		box-sizing: border-box;
+	}
+
+	// 기본 스타일
+	font-family: $font-family-base;
+	line-height: 1.5;
+	color: $color-text-primary;
+	background-color: $color-background;
+
+	// 메인 컨테이너
+	max-width: 1000px;
+	margin: 0 auto;
+	padding: 0 $container-padding;
+
+	@include respond-mobile {
+		padding: 0 16px;
+	}
+
+	// 헤더 (메인 제목)
+	&__header {
+		text-align: center;
+		padding: 150px 0 100px;
+		max-width: 594px;
+		margin: 0 auto;
+
+		@include respond-mobile {
+			padding: 80px 0 60px;
+		}
+	}
+
+	&__hero-title {
+		font-size: $font-size-hero;
+		font-weight: 700;
+		line-height: 1.19;
+		color: $color-text-primary;
+
+		@include respond-mobile {
+			font-size: 32px;
+			line-height: 1.3;
+		}
+	}
+
+	// 메인 콘텐츠 컨테이너
+	&__content {
+		max-width: $container-max-width;
+		margin: 0 auto;
+		display: flex;
+		flex-direction: column;
+		gap: 0;
+	}
+
+	// 섹션 타이틀
+	&__section-title {
+		font-size: $font-size-title;
+		font-weight: 800;
+		line-height: 1.19;
+		color: $color-primary;
+		padding: $spacing-5xl 0 $spacing-xl;
+		display: flex;
+		align-items: center;
+		gap: $spacing-sm;
+
+		@include respond-mobile {
+			font-size: 28px;
+			padding: 60px 0 20px;
+		}
+	}
+
+	// 동백전 혜택 섹션
+	&__benefits {
+		background-color: $color-background-accent;
+		border-top: 1px solid $color-primary;
+		border-bottom: 1px solid $color-primary;
+		padding: $spacing-3xl $spacing-2xl;
+		margin-bottom: 0;
+
+		@include respond-mobile {
+			padding: 24px 20px;
+		}
+
+		&-description {
+			font-size: $font-size-subtitle;
+			font-weight: 700;
+			line-height: 1.75;
+			color: $color-text-primary;
+			margin-bottom: $spacing-md;
+			ol {
+				padding-left: $spacing-2xl;
+				li {
+					& + li {
+						margin-top: 8px;
+					}
+					& > ul {
+						padding-left: $spacing-2xl;
+						font-weight: 400;
+						font-size: 16px;
+						li {
+							& + li {
+								margin-top: 8px;
+							}
+						}
+					}
+				}
+			}
+		}
+
+		&-disclaimer {
+			font-size: $font-size-small;
+			font-weight: 500;
+			line-height: 1.5;
+			letter-spacing: -0.02em;
+			color: $color-text-quaternary;
+		}
+	}
+
+	// 사용 가이드 소개
+	&__guide-intro {
+		padding: $spacing-xl 0 $spacing-2xl;
+
+		@include respond-mobile {
+			padding: 20px 0 24px;
+		}
+
+		&-title {
+			font-size: $font-size-title;
+			font-weight: 800;
+			line-height: 1.19;
+			color: $color-primary;
+			padding: $spacing-5xl 0 $spacing-xl;
+
+			@include respond-mobile {
+				font-size: 28px;
+				margin-bottom: 16px;
+			}
+		}
+
+		&-description {
+			font-size: $font-size-body;
+			font-weight: 500;
+			line-height: 1.19;
+			color: $color-text-primary;
+			margin-bottom: $spacing-2xl;
+		}
+
+		&-image {
+			img {
+				max-width: 100%;
+				height: auto;
+			}
+		}
+	}
+
+	// 스텝 타이틀
+	&__step-title {
+		font-size: $font-size-step;
+		font-weight: 800;
+		line-height: 1.19;
+		color: $color-text-secondary;
+		padding: $spacing-5xl 0 $spacing-xl;
+		display: flex;
+		align-items: center;
+		gap: $spacing-sm;
+
+		@include respond-mobile {
+			font-size: 20px;
+			padding: 60px 0 20px;
+		}
+	}
+
+	// 스텝 콘텐츠
+	&__step-content {
+		display: flex;
+		flex-direction: column;
+		gap: $spacing-4xl;
+		padding: $spacing-xl 0;
+
+		@include respond-mobile {
+			gap: 32px;
+			padding: 16px 0;
+		}
+	}
+
+	// 스텝 섹션
+	&__step-section {
+		display: flex;
+		gap: $spacing-lg;
+
+		@include respond-mobile {
+			flex-direction: column;
+			gap: 16px;
+		}
+
+		&-title {
+			font-size: $font-size-text;
+			font-weight: 700;
+			line-height: 1.78;
+			color: $color-text-primary;
+			min-width: 235px;
+			flex-shrink: 0;
+
+			@include respond-mobile {
+				min-width: auto;
+				font-size: 16px;
+			}
+		}
+
+		&-content {
+			flex: 1;
+			display: flex;
+			flex-direction: column;
+			gap: $spacing-2xl;
+		}
+	}
+
+	// 스텝 설명
+	&__step-description {
+		font-size: $font-size-text;
+		font-weight: 500;
+		line-height: 1.5;
+		letter-spacing: -0.02em;
+		color: $color-text-tertiary;
+		margin-bottom: $spacing-md;
+	}
+
+	&__step-note {
+		font-size: $font-size-body;
+		font-weight: 500;
+		line-height: 1.5;
+		letter-spacing: -0.02em;
+		color: $color-text-quaternary;
+		margin-bottom: $spacing-2xl;
+	}
+
+	// 다운로드 링크
+	&__download-links {
+		display: flex;
+		gap: $spacing-sm;
+		margin-bottom: $spacing-2xl;
+
+		@include respond-mobile {
+			flex-direction: column;
+		}
+	}
+
+	&__download-link {
+		display: flex;
+		align-items: center;
+		gap: $spacing-sm;
+		padding: 12px $spacing-xl;
+		border: 1px solid $color-text-primary;
+		@include border-radius();
+		text-decoration: none;
+		color: $color-text-tertiary;
+		font-size: $font-size-body;
+		font-weight: 600;
+		line-height: 1.5;
+		letter-spacing: -0.02em;
+		transition: all 0.2s ease;
+
+		&:hover {
+			background-color: $color-background-light;
+		}
+
+		&-icon {
+			width: 21px;
+			height: 24px;
+			flex-shrink: 0;
+		}
+	}
+
+	// 정보 박스
+	&__info-box {
+		background-color: $color-background-light;
+		border: 1px solid $color-border;
+		@include border-radius(4px);
+		padding: $spacing-lg $spacing-xl;
+		margin-bottom: $spacing-2xl;
+
+		&--warning {
+			border-left: 4px solid #ff9800;
+		}
+
+		&-title {
+			font-size: $font-size-body;
+			font-weight: 700;
+			line-height: 1.5;
+			letter-spacing: -0.02em;
+			color: $color-text-tertiary;
+			margin-bottom: $spacing-md;
+		}
+
+		&-description {
+			font-size: $font-size-body;
+			font-weight: 500;
+			line-height: 1.5;
+			letter-spacing: -0.02em;
+			color: $color-text-tertiary;
+		}
+	}
+
+	// 프로세스 플로우
+	&__process-flow {
+		display: flex;
+		align-items: center;
+		gap: 19px;
+		width: 100%;
+		margin-bottom: $spacing-3xl;
+
+		@include respond-mobile {
+			flex-direction: column;
+			gap: 16px;
+		}
+	}
+
+	&__process-step {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: $spacing-md;
+		flex: 1;
+
+		&-image {
+			width: 287px;
+			height: 449px;
+			// border: 1px solid $color-border-accent;
+			// border-radius: 24px 24px 0 0;
+			overflow: hidden;
+			position: relative;
+			background-color: $color-background;
+
+			@include respond-mobile {
+				width: 240px;
+				height: 376px;
+			}
+
+			img {
+				width: 100%;
+				height: auto;
+				object-fit: cover;
+			}
+		}
+
+		&-description {
+			font-size: $font-size-subtitle;
+			font-weight: 500;
+			line-height: 1.5;
+			letter-spacing: -0.02em;
+			color: $color-text-tertiary;
+			text-align: center;
+		}
+
+		&-note {
+			font-size: $font-size-body;
+			font-weight: 500;
+			line-height: 1.2;
+			letter-spacing: -0.02em;
+			color: $color-text-light;
+			text-align: center;
+		}
+	}
+
+	&__process-arrow {
+		width: 32px;
+		height: 32px;
+		background-color: $color-background;
+		@include flex-center;
+
+		@include respond-mobile {
+			transform: rotate(90deg);
+		}
+
+		img {
+			width: 100%;
+			height: 100%;
+			object-fit: contain;
+		}
+	}
+
+	// 제휴서비스 섹션
+	// &__partners {
+	// 	@include respond-mobile {
+	// 		padding-top: 60px;
+	// 	}
+	// }
+
+	&__partners-grid {
+		display: flex;
+		flex-direction: column;
+		gap: 0;
+	}
+
+	&__partner-item {
+		display: flex;
+		gap: $spacing-2xl;
+		padding: $spacing-xl;
+		border-top: 1px solid $color-border;
+		align-items: flex-start;
+
+		@include respond-mobile {
+			flex-direction: column;
+			gap: 16px;
+			padding: 16px 0;
+		}
+
+		&:last-child {
+			border-bottom: 1px solid $color-border;
+		}
+	}
+
+	&__partner-icon {
+		width: 100%;
+		max-width: 100px;
+		height: 100%;
+		max-height: 100px;
+		aspect-ratio: 1/1;
+		background-color: $color-background-light;
+		@include border-radius(16px);
+		@include flex-center;
+		flex-shrink: 0;
+		img {
+			width: 100%;
+			height: 100%;
+			object-fit: contain;
+		}
+	}
+
+	&__partner-content {
+		flex: 1;
+		display: flex;
+		flex-direction: column;
+		gap: $spacing-sm;
+	}
+
+	&__partner-title {
+		font-size: $font-size-subtitle;
+		font-weight: 700;
+		line-height: 1.2;
+		letter-spacing: -0.02em;
+		color: $color-text-tertiary;
+	}
+
+	&__partner-description {
+		font-size: $font-size-body;
+		font-weight: 500;
+		line-height: 1.5;
+		letter-spacing: -0.02em;
+		color: $color-text-tertiary;
+	}
+
+	// 유틸리티 클래스
+	&__text-center {
+		text-align: center;
+	}
+
+	&__text-right {
+		text-align: right;
+	}
+
+	&__mb-sm {
+		margin-bottom: $spacing-sm;
+	}
+
+	&__mb-md {
+		margin-bottom: $spacing-md;
+	}
+
+	&__mb-lg {
+		margin-bottom: $spacing-lg;
+	}
+
+	&__mb-xl {
+		margin-bottom: $spacing-xl;
+	}
+
+	&__mt-sm {
+		margin-top: $spacing-sm;
+	}
+
+	&__mt-md {
+		margin-top: $spacing-md;
+	}
+
+	&__mt-lg {
+		margin-top: $spacing-lg;
+	}
+
+	&__mt-xl {
+		margin-top: $spacing-xl;
+	}
+
+	// 반응형 표시/숨김
+	&__mobile-only {
+		display: none;
+
+		@include respond-mobile {
+			display: block;
+		}
+	}
+
+	&__desktop-only {
+		display: block;
+
+		@include respond-mobile {
+			display: none;
+		}
+	}
+}
