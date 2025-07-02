@@ -231,7 +231,6 @@
   line-height: 1.5;
   letter-spacing: -0.02em;
   color: #444444;
-  margin-bottom: 16px;
 }
 .dong100__step-note {
   font-size: 16px;
@@ -239,7 +238,6 @@
   line-height: 1.5;
   letter-spacing: -0.02em;
   color: #666666;
-  margin-bottom: 32px;
 }
 .dong100__download-links {
   display: -webkit-box;
