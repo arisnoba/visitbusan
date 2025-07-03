@@ -1,5 +1,5 @@
 // 베이스 경로 변수 (CMS 배포 시 @{root}를 실제 경로로 치환)
-$root-path: '@{root}' !default;
+$root-path: '/dong100' !default;
 $image-path: '#{$root-path}/images' !default;
 
 // 개발 환경용 오버라이드 (주석 해제하여 사용)
