@@ -92,8 +92,18 @@
   color: #000000;
   margin-bottom: 16px;
 }
+@media (max-width: 768px) {
+  .dong100__benefits-description {
+    font-size: 18px;
+  }
+}
 .dong100__benefits-description ol {
   padding-left: 32px;
+}
+@media (max-width: 768px) {
+  .dong100__benefits-description ol {
+    padding-left: 16px;
+  }
 }
 .dong100__benefits-description ol li + li {
   margin-top: 8px;
@@ -102,6 +112,11 @@
   padding-left: 32px;
   font-weight: 400;
   font-size: 16px;
+}
+@media (max-width: 768px) {
+  .dong100__benefits-description ol li > ul {
+    padding-left: 16px;
+  }
 }
 .dong100__benefits-description ol li > ul li + li {
   margin-top: 8px;
@@ -162,7 +177,6 @@
 @media (max-width: 768px) {
   .dong100__step-title {
     font-size: 20px;
-    padding: 60px 0 20px;
   }
 }
 .dong100__step-content {
@@ -173,8 +187,7 @@
   -webkit-box-direction: normal;
       -ms-flex-direction: column;
           flex-direction: column;
-  gap: 48px;
-  padding: 24px 0;
+  gap: 32px;
 }
 @media (max-width: 768px) {
   .dong100__step-content {
@@ -223,7 +236,7 @@
   -webkit-box-direction: normal;
       -ms-flex-direction: column;
           flex-direction: column;
-  gap: 32px;
+  gap: 24px;
 }
 .dong100__step-description {
   font-size: 18px;
@@ -244,7 +257,6 @@
   display: -ms-flexbox;
   display: flex;
   gap: 8px;
-  margin-bottom: 32px;
 }
 @media (max-width: 768px) {
   .dong100__download-links {
@@ -274,6 +286,13 @@
   -webkit-transition: all 0.2s ease;
   transition: all 0.2s ease;
 }
+@media (max-width: 768px) {
+  .dong100__download-link {
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+  }
+}
 .dong100__download-link:hover {
   background-color: #f8f8f8;
 }
@@ -299,7 +318,7 @@
   line-height: 1.5;
   letter-spacing: -0.02em;
   color: #444444;
-  margin-bottom: 16px;
+  margin-bottom: 8px;
 }
 .dong100__info-box-description {
   font-size: 16px;
@@ -312,15 +331,17 @@
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  -webkit-box-align: start;
+      -ms-flex-align: start;
+          align-items: flex-start;
   gap: 19px;
   width: 100%;
-  margin-bottom: 40px;
 }
 @media (max-width: 768px) {
   .dong100__process-flow {
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
     -webkit-box-orient: vertical;
     -webkit-box-direction: normal;
         -ms-flex-direction: column;
@@ -340,6 +361,7 @@
       -ms-flex-align: center;
           align-items: center;
   gap: 16px;
+  height: 100%;
   -webkit-box-flex: 1;
       -ms-flex: 1;
           flex: 1;
@@ -392,6 +414,8 @@
   -webkit-box-pack: center;
       -ms-flex-pack: center;
           justify-content: center;
+  -ms-flex-item-align: center;
+      align-self: center;
 }
 @media (max-width: 768px) {
   .dong100__process-arrow {
@@ -402,6 +426,8 @@
 .dong100__process-arrow img {
   width: 100%;
   height: 100%;
+  max-width: 32px;
+  max-height: 32px;
   -o-object-fit: contain;
      object-fit: contain;
 }
@@ -428,10 +454,6 @@
 }
 @media (max-width: 768px) {
   .dong100__partner-item {
-    -webkit-box-orient: vertical;
-    -webkit-box-direction: normal;
-        -ms-flex-direction: column;
-            flex-direction: column;
     gap: 16px;
     padding: 16px 0;
   }
@@ -464,6 +486,12 @@
   height: 100%;
   -o-object-fit: contain;
      object-fit: contain;
+}
+@media (max-width: 768px) {
+  .dong100__partner-icon {
+    max-width: 60px;
+    max-height: 60px;
+  }
 }
 .dong100__partner-content {
   -webkit-box-flex: 1;
