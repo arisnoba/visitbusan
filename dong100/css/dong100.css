@@ -266,6 +266,36 @@
             flex-direction: column;
   }
 }
+.dong100__download-links.busanpay {
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: start;
+      -ms-flex-align: start;
+          align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 0;
+}
+.dong100__download-links.busanpay > div {
+  width: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+@media (max-width: 768px) {
+  .dong100__download-links.busanpay > div {
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+  }
+}
 .dong100__download-link {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -291,6 +321,7 @@
     -webkit-box-pack: center;
         -ms-flex-pack: center;
             justify-content: center;
+    width: 100%;
   }
 }
 .dong100__download-link:hover {
