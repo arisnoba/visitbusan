@@ -6,9 +6,6 @@
 	</head>
 	<body>
 		<style>
-			img {
-				display: block;
-			}
 			.temporary-wrap {
 				width: 100%;
 				max-width: 1920px;
@@ -44,9 +41,10 @@
 				}
 			}
 		</style>
-		<div class="festival">
+		<div class="festival overflow-hidden">
 			<div class="festival-hero">
-				<img class="" src="images/festival-hero.jpg" alt="" />
+				<img class="hidden md:block relative left-[50%] -translate-x-1/2 min-w-[1400px]" src="images/festival-hero.jpg" alt="" />
+				<img class="block md:hidden" src="images/festival-hero-mobile.jpg" alt="" />
 			</div>
 			<div class="festival-intro py-20 lg:pt-35 lg:pb-30">
 				<div class="container">
@@ -187,8 +185,8 @@
 										공식 홈페이지
 									</div>
 									<div class="flex flex-col gap-2 sm:gap-6 text-md lg:text-xl">
-										<a href="https://wcfbusan.kr/" class="font-semibold text-black-100 text-left sm:text-right lg:text-left">wcfbusan.kr</a>
-										<a class="py-2 w-fit inline-flex font-bold text-[#9914FA] border-1 border-[#9914FA] px-6 rounded-lg" href="https://wcfbusan.kr/">홈페이지 바로가기</a>
+										<a href="https://wcfbusan.kr/" target="_blank" class="font-semibold text-black-100 text-left sm:text-right lg:text-left">wcfbusan.kr</a>
+										<a href="https://wcfbusan.kr/" target="_blank" class="py-2 w-fit inline-flex font-bold text-[#9914FA] border-1 border-[#9914FA] px-6 rounded-lg">홈페이지 바로가기</a>
 									</div>
 								</div>
 							</div>
