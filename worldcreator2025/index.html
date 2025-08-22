@@ -49,7 +49,7 @@
 			</div>
 			<div class="festival-intro py-20 lg:pt-35 lg:pb-30">
 				<div class="container">
-					<div class="flex flex-col gap-20 sm:gap-30">
+					<div class="flex flex-col gap-5 sm:gap-10 lg:gap-30">
 						<div class="heading flex flex-col gap-2 sm:gap-4 font-bold text-center text-black-100">
 							<div class="heading-1 text-[32px] sm:text-[40px] lg:text-[64px] leading-[1.5]" data-aos="fade-up" data-aos-delay="200">
 								<span class="px-5 sm:px-10 border-2 sm:border-4 rounded-full border-[#165DFB] text-[#165DFB] bg-white">글로벌</span>
@@ -64,7 +64,7 @@
 								여러분을 초대합니다!
 							</div>
 						</div>
-						<div class="grid lg:grid-cols-7 gap-10 sm:gap-15">
+						<div class="grid lg:grid-cols-7 gap-20 lg:gap-15">
 							<div class="lg:col-span-4">
 								<img class="w-full max-w-[90%] sm:max-w-[70%] lg:max-w-[690px] m-auto" src="/worldcreator2025/images/festival-intro.png" alt="festival-intro" />
 							</div>
@@ -203,6 +203,7 @@
 		<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
 		<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 
+		<script src="https://unpkg.com/@studio-freight/lenis@1.0.29/bundled/lenis.min.js"></script>
 		<script>
 			AOS.init({
 				once: true,
@@ -228,6 +229,26 @@
 					prevEl: '.swiper-prev',
 				},
 			});
+		</script>
+		<script>
+			if (window.Lenis) {
+				const lenis = new Lenis({
+					smoothWheel: true,
+					smoothTouch: false,
+					duration: 0.8,
+				});
+
+				function raf(time) {
+					lenis.raf(time);
+					requestAnimationFrame(raf);
+				}
+				requestAnimationFrame(raf);
+
+				// keep GSAP ScrollTrigger in sync with Lenis
+				if (window.gsap && window.ScrollTrigger) {
+					lenis.on('scroll', ScrollTrigger.update);
+				}
+			}
 		</script>
 	</body>
 </html>
