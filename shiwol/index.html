@@ -29,7 +29,7 @@
 		<div class="shiwol overflow-hidden">
 			<div class="shiwol-hero">
 				<picture class="relative block left-[50%] -translate-x-1/2 w-full min-w-[768px] md:min-w-[1300px]">
-					<img src="/shiwol/images/shiwol-hero.png" alt="" />
+					<img class="duration-100 ease-in-out" src="/shiwol/images/shiwol-hero.png" alt="" />
 				</picture>
 			</div>
 			<div class="shiwol-body relative -mt-[20%]">
@@ -311,7 +311,7 @@
 				if (heroImg) {
 					heroImg.style.willChange = 'transform';
 					gsap.to(heroImg, {
-						yPercent: 20,
+						yPercent: 10,
 						ease: 'power2.out',
 						force3D: true,
 						scrollTrigger: {
