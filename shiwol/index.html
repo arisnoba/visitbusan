@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="ko">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+	</head>
+	<body>
+		<style>
+			.shiwol-item a img {
+				filter: invert(1);
+			}
+			.shiwol-item:hover {
+				border-color: #613489;
+			}
+			.shiwol-item:hover a {
+				background-color: #613489;
+				color: #fff;
+			}
+			.shiwol-item:hover a img {
+				filter: invert(0);
+			}
+			.shiwol-tab button.active {
+				opacity: 1;
+				background-color: #613489;
+				color: #fff;
+			}
+		</style>
+		<div class="shiwol overflow-hidden">
+			<div class="shiwol-hero">
+				<picture class="relative block left-[50%] -translate-x-1/2 w-full min-w-[768px] md:min-w-[1300px]">
+					<img src="/shiwol/images/shiwol-hero.png" alt="" />
+				</picture>
+			</div>
+			<div class="shiwol-body relative -mt-[20%]">
+				<div class="shiwol-container py-15 px-5 md:px-10 max-w-[1300px] mx-auto border-t-2 border-[#613489] bg-white min-h-[100svh]">
+					<div class="shiwol-tab flex gap-1 md:gap-2 mb-10 md:mb-15 overflow-x-auto w-[calc(100%+20px)] md:w-[calc(100%+40px)] lg:w-full pr-5 md:pr-10" id="shiwolTab">
+						<!-- Tabs will be dynamically generated here -->
+					</div>
+					<div class="shiwol-list grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 md:gap-8" id="shiwolList">
+						<!-- Items will be dynamically generated here -->
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+		<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+		<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
+		<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+		<script src="https://unpkg.com/@studio-freight/lenis@1.0.29/bundled/lenis.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+
+		<script>
+			// JSON 데이터
+			const shiwolData = [
+				{ date: '09. 09.화 ~ 10. 10.금', title: '신진작가 아트쇼', organizer: '', location: '', price: '', link: '', category: '시월아트' },
+				{
+					date: '09. 17.수 ~ 09. 21.일',
+					title: '부산국제건축제',
+					organizer: '부산건축제조직위원회',
+					location: '벡스코',
+					price: '무료(사전등록필요)',
+					link: 'http://www.biacf.or.kr/',
+					category: '시월아트',
+				},
+				{
+					date: '09. 20.토 ~ 09. 23.화',
+					title: '아시아콘텐츠필름마켓',
+					organizer: '부산국제영화제',
+					location: '벡스코',
+					price: '198000~297000원 ',
+					link: 'https://www.acfm.kr/kor/',
+					category: '시월영화',
+				},
+				{ date: '09. 20.토 ~ 09. 21.일', title: '시월국제드론라이트닝쇼 경연대회', organizer: 'KNN', location: '북항 친수공원', price: '', link: '', category: '시월아트' },
+				{ date: '09. 20.토 ~ 09. 21.일', title: '사상강변축제', organizer: '사상문화원', location: '삼락생태공원', price: '무료', link: 'https://chunchunlife.tistory.com/2', category: '시월컬처' },
+				{
+					date: '09. 20.토 ~ 09. 24.수',
+					title: '부산수제맥주마스터즈챌린지',
+					organizer: '부산경제진흥원, 벡스코',
+					location: '벡스코',
+					price: '무료입장',
+					link: 'https://www.instagram.com/official_bcmc/',
+					category: '시월고메',
+				},
+				{ date: '09. 20.토 ~ 10. 19.일', title: '부산독서문화축제', organizer: '부산문화재단', location: '다대포 해수욕장', price: '', link: '', category: '시월컬처' },
+				{ date: '09. 20.토 ~ 09. 21.일', title: '시월 콘서트', organizer: '', location: '', price: '', link: '', category: '시월컬처' },
+				{ date: '09. 21.일', title: '세븐브릿지 사이클대회', organizer: '', location: '세븐브릿지', price: '대회', link: '', category: '시월컬처' },
+				{ date: '09. 21.일 ~ 09. 28.일', title: '시월 인사이트', organizer: '부산테크노파크', location: '벡스코', price: '', link: '', category: '시월테크' },
+				{ date: '09. 21.일 ~ 09. 28.일', title: '시월 & 태양의 서커스', organizer: '마스트인터내셔널', location: '해운대 센텀', price: '', link: '', category: '시월컬처' },
+				{ date: '09. 21.일', title: '시월 개막식', organizer: '부산축제조직위', location: '광안대교 상판', price: '', link: '', category: '' },
+				{ date: '09. 22.월 ~ 09. 28.일', title: '디자인페스티벌 시월', organizer: '부산디자인진흥원', location: '부산시 전역', price: '무료', link: 'https://adp.dcb.or.kr/dfs', category: '시월아트' },
+				{
+					date: '09. 17.수 ~ 09. 26.금',
+					title: '부산국제영화제',
+					organizer: '부산국제영화제',
+					location: '영화의전당 일원',
+					price: '9만~14만 ',
+					link: 'https://www.biff.kr/kor/',
+					category: '시월영화',
+				},
+				{
+					date: '09. 22.월 ~ 09. 23.화',
+					title: '아시아 창업 엑스포',
+					organizer: '부산창업기술투자원',
+					location: '벡스코',
+					price: '무료',
+					link: 'https://www.fly-asia.org/eng/main/',
+					category: '시월테크',
+				},
+				{
+					date: '09. 22.월 ~ 09. 26.금',
+					title: '국제미량원소생지화학학술대회',
+					organizer: '리컨벤션',
+					location: '벡스코',
+					price: '110만원',
+					link: 'https://ichmet2025.org/',
+					category: '시월테크',
+				},
+				{
+					date: '09. 24.수 ~ 09. 28.일',
+					title: '부산공연예술마켓',
+					organizer: '부산문화재단',
+					location: '문화회관 광안리, 시민회관',
+					price: '유료',
+					link: 'https://www.bpam.kr/',
+					category: '시월마켓',
+				},
+				{ date: '09. 24.수 ~ 09. 26.금', title: '비욘드 한글&K-컬쳐 국제 페스티벌', organizer: '리컨벤션', location: '벡스코', price: '', link: 'https://beyondkculture.com/', category: '시월컬처' },
+				{
+					date: '09. 25.목 ~ 09. 28.일',
+					title: '부산웹툰페스티벌',
+					organizer: '부산정보산업진흥원',
+					location: '부산문화콘텐츠 <br>콤플레스 일원',
+					price: '무료',
+					link: 'https://bwfest.com/',
+					category: '시월아트',
+				},
+				{
+					date: '09. 26.금 ~ 09. 28.일',
+					title: '부산국제록페스티벌',
+					organizer: '부산문화관광축제조직위',
+					location: '삼락생태공원',
+					price: '얼리버드 3일권 <br>193,600원',
+					link: 'https://busanrockfestival.com/',
+					category: '시월뮤직',
+				},
+				{ date: '09. 26.금 ~ 09. 28.일', title: '부산국제음식박람회', organizer: '리컨벤션', location: '벡스코', price: '무료', link: 'http://bife.kr/2024/main/index_kor.asp', category: '시월고메' },
+				{
+					date: '09. 26.금 ~ 09. 28.일',
+					title: '낙동강구포나루축제',
+					organizer: '북구청',
+					location: '화명생태공원',
+					price: '무료 (일부체험 유료 5000~10000)',
+					link: 'https://inforrlife.tistory.com/entry/%EB%82%99%EB%8F%99%EA%B0%95-%EA%B5%AC%ED%8F%AC%EB%82%98%EB%A3%A8-%EC%B6%95%EC%A0%9C-%EC%B4%88%EB%8C%80%EA%B0%80%EC%88%98-%EC%9D%BC%EC%A0%95-%EB%A8%B9%EA%B1%B0%EB%A6%AC-%EC%B2%B4%ED%97%98-%EC%82%AC%EC%A0%84%EC%98%88%EC%95%BD',
+					category: '시월컬처',
+				},
+				{
+					date: '09. 26.금 ~ 09. 28.일',
+					title: '부산국제공연예술제',
+					organizer: '금정문화재단',
+					location: '온천천 및 부산대학교',
+					price: '무료',
+					link: 'https://korean.visitkorea.or.kr/kfes/detail/fstvlDetail.do?fstvlCntntsId=85d240f7-5bf7-4c03-be7a-1516ebe976fb',
+					category: '시월뮤직',
+				},
+				{
+					date: '09. 27.토 ~ 09. 28.일',
+					title: '부산거리예술축제',
+					organizer: '부산문화재단',
+					location: '해운대 해변로',
+					price: '대회',
+					link: 'https://www.bscf.or.kr/portal/bidInfo/view.do?mId=&idx=1195',
+					category: '시월아트',
+				},
+				{ date: '09. 27.토 ~ 11. 02.일', title: '부산바다미술제', organizer: '부산비엔날레조직위원회', location: '다대포 해수욕장', price: '', link: '', category: '시월아트' },
+				{ date: '09. 27.토', title: '팔관회 명상 걷기 대회', organizer: '부산불교연합회', location: '북항 친수공원', price: '', link: '', category: '시월컬처' },
+				{
+					date: '09. 28.일 ~ 09. 30.화',
+					title: '월드크리에이터페스티벌',
+					organizer: '부산관광공사',
+					location: '부산시 전역',
+					price: '무료',
+					link: 'https://www.wcfbusan.kr/?fbclid=IwZXh0bgNhZW0CMTAAAR241mmdbGLn532YVJckg7vqHGlS6MgHrZllC7PaUko6r9Z9zdalEV9hem8_aem_m927Fb4O08CrnSSrgdzSwg',
+					category: '시월컬처',
+				},
+				{ date: '09. 20.토 ~ 09. 21.일', title: '페스티벌시월 부산재즈페스타', organizer: '아이엠아이', location: '북항 친수공원', price: '', link: '', category: '' },
+				{ date: '09. 21.일', title: '세븐브릿지 투어', organizer: '부산문화관광축제조직위', location: '세븐브릿지', price: '', link: '', category: '' },
+				{ date: '09. 20.토 ~ 09. 30.화', title: '월드크리에이티브 페스티벌', organizer: '부산관광공사, 포유커뮤니케이션즈', location: '부산시 전역', price: '', link: '', category: '' },
+			];
+
+			// 아이템 생성 함수
+			function createShiwolItem(item) {
+				const linkSection = item.link
+					? `<a href="${item.link}" target="_blank" class="p-5  bg-[rgba(96,51,137,0.1)] text-[#02040F] flex gap-2 justify-between items-center -mb-6 mt-8 w-[calc(100%+48px)] leading-1 left-[-24px] relative font-bold duration-300 ease-in-out">
+                홈페이지 바로가기
+                <img class="duration-300 ease-in-out"  src="/shiwol/images/arrow-up-right-from-square.svg" alt="" />
+              </a>`
+					: '';
+
+				const organizerSection = item.organizer
+					? `<div class="flex justify-between ">
+                <p class="text-base font-semibold leading-[1.2] text-[#02040F] opacity-40">주관기관</p>
+                <p class="text-base font-semibold leading-[1.2] text-[#02040F] text-right">${item.organizer}</p>
+              </div>`
+					: '';
+
+				const locationSection = item.location
+					? `<div class="flex justify-between ">
+                <p class="text-base font-semibold leading-[1.2] text-[#02040F] opacity-40">행사장소</p>
+                <p class="text-base font-semibold leading-[1.2] text-[#02040F] text-right">${item.location}</p>
+              </div>`
+					: '';
+
+				const priceSection = item.price
+					? `<div class="flex justify-between ">
+                <p class="text-base font-semibold leading-[1.2] text-[#02040F] opacity-40">티켓가격</p>
+                <p class="text-base font-semibold leading-[1.2] text-[#02040F] text-right">${item.price}</p>
+              </div>`
+					: '';
+
+				// 정보 섹션이 하나라도 있으면 border-t 클래스 추가
+				const hasInfo = item.organizer || item.location || item.price;
+				const infoContainerClass = hasInfo ? 'pt-6 mt-auto flex flex-col gap-2 border-t-1 border-[rgba(0,0,0,0.08)]' : 'pt-6 mt-auto flex flex-col gap-2';
+
+				return `
+          <div class="shiwol-item p-6 rounded-lg border-1 border-[rgba(0,0,0,0.08)] flex flex-col   md:aspect-[281/354] overflow-hidden duration-300 ease-in-out" data-category="${item.category}" >
+            <div class="flex flex-col gap-2 mb-6">
+              <p class="text-[#613489] text-base font-bold">${item.date}</p>
+              <h4 class="text-[#02040F] text-2xl font-bold">${item.title}</h4>
+            </div>
+
+            <div class="${infoContainerClass}">
+              ${organizerSection}
+              ${locationSection}
+              ${priceSection}
+            </div>
+            ${linkSection}
+          </div>
+        `;
+			}
+
+			// 탭 생성 함수
+			function createTabs() {
+				const categories = ['전체', ...new Set(shiwolData.map((item) => item.category).filter(Boolean))];
+				const tabContainer = document.getElementById('shiwolTab');
+
+				tabContainer.innerHTML = categories
+					.map(
+						(category, index) => `
+					<button type="button" 
+						class="tab-button opacity-30 text-[#603389] border-1 border-[#603389]  text-md md:text-xl xl:text-3xl px-3 py-2 md:px-4 md:py-3 rounded-md font-bold hover:opacity-100 duration-300 ease-in-out whitespace-nowrap cursor-pointer ${
+							index === 0 ? 'active' : ''
+						}" 
+						data-category="${category}">
+						${category}
+					</button>
+				`
+					)
+					.join('');
+			}
+
+			// 아이템 필터링 함수
+			function filterItems(category) {
+				const items = document.querySelectorAll('.shiwol-item');
+				items.forEach((item) => {
+					if (category === '전체' || item.dataset.category === category) {
+						item.style.display = 'flex';
+					} else {
+						item.style.display = 'none';
+					}
+				});
+			}
+
+			// 탭 클릭 이벤트 처리
+			function handleTabClick(event) {
+				const clickedTab = event.target;
+				if (!clickedTab.classList.contains('tab-button')) return;
+
+				// 모든 탭에서 active 클래스 제거
+				document.querySelectorAll('.tab-button').forEach((tab) => {
+					tab.classList.remove('active');
+				});
+
+				// 클릭된 탭에 active 클래스 추가
+				clickedTab.classList.add('active');
+
+				// 아이템 필터링
+				const category = clickedTab.dataset.category;
+				filterItems(category);
+			}
+
+			// 페이지 로드 시 초기화
+			document.addEventListener('DOMContentLoaded', function () {
+				const shiwolList = document.getElementById('shiwolList');
+				shiwolList.innerHTML = shiwolData.map((item) => createShiwolItem(item)).join('');
+
+				// 탭 생성
+				createTabs();
+
+				// 탭 클릭 이벤트 리스너 추가
+				document.getElementById('shiwolTab').addEventListener('click', handleTabClick);
+			});
+
+			// Lenis smooth scroll
+			if (window.Lenis) {
+				const lenis = new Lenis({
+					smoothWheel: true,
+					smoothTouch: false,
+					duration: 0.8,
+				});
+
+				function raf(time) {
+					lenis.raf(time);
+					requestAnimationFrame(raf);
+				}
+				requestAnimationFrame(raf);
+
+				// keep GSAP ScrollTrigger in sync with Lenis
+				if (window.gsap && window.ScrollTrigger) {
+					lenis.on('scroll', ScrollTrigger.update);
+				}
+			}
+
+			// GSAP hero parallax (slow upward translate on scroll)
+			if (window.gsap && window.ScrollTrigger) {
+				gsap.registerPlugin(ScrollTrigger);
+				const heroImg = document.querySelector('.shiwol-hero img');
+				if (heroImg) {
+					heroImg.style.willChange = 'transform';
+					gsap.to(heroImg, {
+						yPercent: 20,
+						ease: 'power2.out',
+						force3D: true,
+						scrollTrigger: {
+							trigger: '.shiwol-hero',
+							start: 'top top',
+							end: 'bottom top',
+							scrub: 0.5,
+						},
+					});
+				}
+			}
+		</script>
+	</body>
+</html>
