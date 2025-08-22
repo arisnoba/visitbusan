@@ -49,7 +49,6 @@
 		<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 		<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
 		<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-		<script src="https://unpkg.com/@studio-freight/lenis@1.0.29/bundled/lenis.min.js"></script>
 		<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
 		<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
 
@@ -304,26 +303,6 @@
 				// 탭 클릭 이벤트 리스너 추가
 				document.getElementById('shiwolTab').addEventListener('click', handleTabClick);
 			});
-
-			// Lenis smooth scroll
-			if (window.Lenis) {
-				const lenis = new Lenis({
-					smoothWheel: true,
-					smoothTouch: false,
-					duration: 0.8,
-				});
-
-				function raf(time) {
-					lenis.raf(time);
-					requestAnimationFrame(raf);
-				}
-				requestAnimationFrame(raf);
-
-				// keep GSAP ScrollTrigger in sync with Lenis
-				if (window.gsap && window.ScrollTrigger) {
-					lenis.on('scroll', ScrollTrigger.update);
-				}
-			}
 
 			// GSAP hero parallax (slow upward translate on scroll)
 			if (window.gsap && window.ScrollTrigger) {

@@ -203,7 +203,6 @@
 		<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
 		<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 
-		<script src="https://unpkg.com/@studio-freight/lenis@1.0.29/bundled/lenis.min.js"></script>
 		<script>
 			AOS.init({
 				once: true,
@@ -229,26 +228,6 @@
 					prevEl: '.swiper-prev',
 				},
 			});
-		</script>
-		<script>
-			if (window.Lenis) {
-				const lenis = new Lenis({
-					smoothWheel: true,
-					smoothTouch: false,
-					duration: 0.8,
-				});
-
-				function raf(time) {
-					lenis.raf(time);
-					requestAnimationFrame(raf);
-				}
-				requestAnimationFrame(raf);
-
-				// keep GSAP ScrollTrigger in sync with Lenis
-				if (window.gsap && window.ScrollTrigger) {
-					lenis.on('scroll', ScrollTrigger.update);
-				}
-			}
 		</script>
 	</body>
 </html>
