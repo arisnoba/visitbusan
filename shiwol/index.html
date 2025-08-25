@@ -210,21 +210,21 @@
 				const organizerSection = item.organizer
 					? `<div class="flex justify-between gap-1.5 ">
                 <p class="text-base  whitespace-nowrap font-semibold leading-[1.2] text-[#02040F] opacity-40">주관기관</p>
-                <p class="text-base font-semibold leading-[1.2] text-[#02040F] text-right">${item.organizer}</p>
+                <p class="text-base font-semibold word break-keep leading-[1.2] text-[#02040F] text-right">${item.organizer}</p>
               </div>`
 					: '';
 
 				const locationSection = item.location
 					? `<div class="flex justify-between gap-1.5 ">
                 <p class="text-base  whitespace-nowrap font-semibold leading-[1.2] text-[#02040F] opacity-40">행사장소</p>
-                <p class="text-base font-semibold leading-[1.2] text-[#02040F] text-right">${item.location}</p>
+                <p class="text-base font-semibold word break-keep leading-[1.2] text-[#02040F] text-right">${item.location}</p>
               </div>`
 					: '';
 
 				const priceSection = item.price
 					? `<div class="flex justify-between gap-1.5 ">
                 <p class="text-base whitespace-nowrap font-semibold leading-[1.2] text-[#02040F] opacity-40">티켓가격</p>
-                <p class="text-base font-semibold leading-[1.2] text-[#02040F] text-right">${item.price}</p>
+                <p class="text-base font-semibold word break-keep leading-[1.2] text-[#02040F] text-right">${item.price}</p>
               </div>`
 					: '';
 
@@ -236,7 +236,7 @@
           <div class="shiwol-item p-6 rounded-lg border-1 border-[rgba(0,0,0,0.08)] flex flex-col   md:aspect-[281/354] overflow-hidden duration-300 ease-in-out" data-category="${item.category}" >
             <div class="flex flex-col gap-2 mb-6">
               <p class="text-[#613489] text-base font-bold">${item.date}</p>
-              <h4 class="text-[#02040F] text-2xl font-bold">${item.title}</h4>
+              <h4 class="text-[#02040F] text-2xl font-bold ">${item.title}</h4>
             </div>
 
             <div class="${infoContainerClass}">
