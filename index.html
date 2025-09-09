@@ -1,0 +1,14 @@
+<!-- max-width : 임베딩 페이지 레이아웃에 맞춰 수정하세요.
+     px, %, vw, vh 등 CSS 크기 단위를 자유롭게 사용 가능합니다.
+     예) max-width: 800px;  max-width: 80%;  max-width: 50vh; -->
+<!-- 📱 모바일 / 💻 PC 대응 비율 안내:  - 정사각형 (1 / 1) → 아이콘, 카드, 3D 뷰어 적합 등 공통  - 가로형 (16 / 9) → 💻 PC 영상  - 세로형 (9 / 16, 3 / 4) → 📱 모바일 콘텐츠, 앱 뷰-->
+<div style="width: 100%; max-width: 600px; aspect-ratio: 1 / 1">
+	<iframe id="TinaxrEmbed" style="width: 100%; height: 100%; border: 0" allowfullscreen mozallowfullscreen webkitallowfullscreen></iframe>
+</div>
+<script>
+	window.onload = function () {
+		const frame = document.getElementById('TinaxrEmbed');
+		const referrer = encodeURIComponent(window.location.href);
+		frame.src = `https://www.tinaxr.com/embed?key=TinaXrf0473c43-e5c0-48b3-aa14-803fe4b0d9ad&referrer=${referrer}`;
+	};
+</script>
