@@ -85,8 +85,6 @@
       }
 
       .categorySwiper .swiper-slide {
-        width: 150px !important;
-        margin-right: 24px;
       }
 
       .categorySwiper .swiper-slide:last-child {
@@ -94,7 +92,7 @@
       }
 
       .category-item {
-        width: 150px;
+        /* width: 150px; */
         cursor: pointer;
         opacity: 0.6;
       }
@@ -107,16 +105,20 @@
         transform: translateY(-2px);
       }
       .left-contents {
-        position: absolute;
         bottom: 15%;
         left: 28%;
         transform: translate(-50%);
       }
       .right-contents {
-        position: absolute;
         bottom: 15%;
         right: 28%;
         transform: translate(50%);
+      }
+      @media all and (max-width: 767px) {
+        .left-contents,
+        .right-contents {
+          transform: none;
+        }
       }
     </style>
     <div class="shiwol overflow-hidden">
@@ -135,9 +137,11 @@
         </div>
       </div>
       <div class="shiwol-body relative -mt-[20%]">
-        <div class="shiwol-container max-w-[1200px] mx-auto min-h-[100svh]">
+        <div
+          class="shiwol-container px-4 lg:px-0 max-w-[1200px] mx-auto min-h-[100svh]"
+        >
           <!-- 달력 (1뎁스) -->
-          <div class="calendar-section mb-20">
+          <div class="calendar-section mb-10 sm:mb-20">
             <div class="calendar-grid bg-white rounded-lg" id="calendar">
               <!-- 달력이 여기에 생성됩니다 -->
             </div>
@@ -146,7 +150,7 @@
           <!-- 지역 선택 (2뎁스) - 항상 표시 -->
           <div class="region-section mb-10" id="regionSection">
             <div
-              class="region-tabs grid grid-cols-5 gap-2 mb-6"
+              class="region-tabs grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-2"
               id="regionTabs"
             >
               <!-- 지역 탭이 여기에 생성됩니다 -->
@@ -154,7 +158,10 @@
           </div>
 
           <!-- 카테고리 선택 (3뎁스) - 슬라이드 -->
-          <div class="category-section mb-20" id="categorySection">
+          <div
+            class="category-section mb-10 sm:mb-20 w-[calc(100%+16px)] sm:w-full"
+            id="categorySection"
+          >
             <div class="category-slider-container relative">
               <div class="swiper categorySwiper">
                 <div class="swiper-wrapper" id="categoryGrid">
@@ -166,7 +173,10 @@
 
           <!-- 아이템 목록 -->
           <div class="items-section" id="itemsSection">
-            <div class="items-grid grid grid-cols-1 gap-14" id="itemsList">
+            <div
+              class="items-grid grid grid-cols-1 gap-10 md:gap-14"
+              id="itemsList"
+            >
               <!-- 아이템이 여기에 생성됩니다 -->
             </div>
           </div>
@@ -185,61 +195,9 @@
       href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"
     />
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 
     <script>
       console.log("Script started");
-
-      // 상태 관리
-      let state = {
-        date: new Date().getDate(),
-        region: "전체",
-        category: null,
-      };
-
-      console.log("State initialized:", state);
-
-      // 유틸리티
-      function isRegionMatch(itemRegion, selectedRegion) {
-        if (selectedRegion === "전체") return true;
-        if (itemRegion.includes("부산") && itemRegion.includes("전역"))
-          return true;
-        if (itemRegion === selectedRegion) return true;
-        if (itemRegion.includes("/")) {
-          return itemRegion
-            .split("/")
-            .some((region) => region.trim() === selectedRegion);
-        }
-        return false;
-      }
-
-      function getAvailableCategories() {
-        return categories.filter((category) => {
-          return shiwolData.some((item) => {
-            return (
-              item.category === category.name &&
-              (state.date === null || item.date === state.date) &&
-              isRegionMatch(item.region, state.region)
-            );
-          });
-        });
-      }
-
-      function getFilteredItems() {
-        if (!state.category) return [];
-        return shiwolData.filter((item) => {
-          return (
-            item.date === state.date &&
-            isRegionMatch(item.region, state.region) &&
-            item.category === state.category
-          );
-        });
-      }
-
-      function hasEventsOnDate(date) {
-        return shiwolData.some((item) => item.date === date);
-      }
 
       // 시월축제 데이터
       const shiwolData = [
@@ -671,6 +629,72 @@
         },
       ];
 
+      // 상태 관리
+      function findNearestEventDate(today, data) {
+        // 오늘 이후 날짜 중 가장 가까운 행사 날짜, 없createItemCard으면 오늘 이전 중 가장 가까운 행사 날짜
+        const todayDate = today.getDate();
+        const eventDates = data
+          .map((item) => item.date)
+          .filter((date) => typeof date === "number");
+        if (eventDates.length === 0) return todayDate;
+        // 오름차순 정렬
+        eventDates.sort((a, b) => a - b);
+        // 오늘 이후
+        const afterToday = eventDates.find((date) => date >= todayDate);
+        if (afterToday !== undefined) return afterToday;
+        // 오늘 이전 중 가장 가까운 날짜
+        return eventDates[eventDates.length - 1];
+      }
+
+      let state = {
+        date: findNearestEventDate(new Date(), shiwolData),
+        region: "전체",
+        category: null,
+      };
+
+      console.log("State initialized:", state);
+
+      // 유틸리티
+      function isRegionMatch(itemRegion, selectedRegion) {
+        if (selectedRegion === "전체") return true;
+        if (itemRegion.includes("부산") && itemRegion.includes("전역"))
+          return true;
+        if (itemRegion === selectedRegion) return true;
+        if (itemRegion.includes("/")) {
+          return itemRegion
+            .split("/")
+            .some((region) => region.trim() === selectedRegion);
+        }
+        return false;
+      }
+
+      function getAvailableCategories() {
+        return categories.filter((category) => {
+          return shiwolData.some((item) => {
+            return (
+              item.category === category.name &&
+              (state.date === null || item.date === state.date) &&
+              isRegionMatch(item.region, state.region)
+            );
+          });
+        });
+      }
+
+      function getFilteredItems() {
+        if (!state.category) return [];
+        return shiwolData.filter((item) => {
+          return (
+            item.date === state.date &&
+            isRegionMatch(item.region, state.region) &&
+            item.category === state.category
+          );
+        });
+      }
+
+      function hasEventsOnDate(date) {
+        return shiwolData.some((item) => item.date === date);
+      }
+
       // 지역 목록 (수동 정리)
       const regions = [
         "전체",
@@ -693,16 +717,16 @@
 
       // 카테고리 목록 (이미지와 함께)
       const categories = [
-        { name: "고메", image: "/shiwol/images/event-01.png" }, // 시월고메
-        { name: "뮤직", image: "/shiwol/images/event-02.png" }, // 시월뮤직
-        { name: "컬쳐", image: "/shiwol/images/event-03.png" }, // 시월컬쳐
-        { name: "무비", image: "/shiwol/images/event-04.png" }, // 시월무비
-        { name: "테크", image: "/shiwol/images/event-05.png" }, // 시월테크
-        { name: "레저", image: "/shiwol/images/event-06.png" },
-        { name: "비즈", image: "/shiwol/images/event-07.png" },
-        { name: "네트워킹", image: "/shiwol/images/event-08.png" },
-        { name: "인사이트", image: "/shiwol/images/event-09.png" },
-        { name: "로컬", image: "/shiwol/images/event-10.png" },
+        { name: "고메", image: "/shiwol/images/c-gome.png" }, // 시월고메
+        { name: "뮤직", image: "/shiwol/images/c-music.png" }, // 시월뮤직
+        { name: "컬쳐", image: "/shiwol/images/c-culture.png" }, // 시월컬쳐
+        { name: "무비", image: "/shiwol/images/c-movie.png" }, // 시월무비
+        { name: "테크", image: "/shiwol/images/c-tech.png" }, // 시월테크
+        { name: "레저", image: "/shiwol/images/c-leisure.png" },
+        { name: "비즈", image: "/shiwol/images/c-biz.png" },
+        { name: "네트워킹", image: "/shiwol/images/c-network.png" },
+        { name: "인사이트", image: "/shiwol/images/c-insight.png" },
+        { name: "로컬", image: "/shiwol/images/c-local.png" },
       ];
 
       // 달력 생성 함수
@@ -744,8 +768,8 @@
           const isToday = day === today.getDate() && currentMonth === 8;
           const isSelected = day === state.date;
 
-          const dayClass = `calendar-day py-5 px-2 flex flex-col items-center justify-center border-r-1 border-b-1 border-[#eee] cursor-pointer transition-all duration-200 ${
-            hasEvents ? "" : "hover:bg-gray-100"
+          const dayClass = `calendar-day py-3 md:py-5 px-1 md:px-2 flex flex-col items-center justify-center border-r-1 border-b-1 border-[#eee] cursor-pointer transition-all duration-200 ${
+            hasEvents ? "hover:bg-gray-100" : ""
           } ${
             isToday
               ? "[&>.calendar-date]:bg-[#B89FFF] [&>.calendar-date]:!text-white"
@@ -753,13 +777,18 @@
           } ${isSelected ? "" : ""}`;
 
           calendarHTML += `
-            <div class="${dayClass} [&.active_.calendar-date]:bg-[#613489] [&.active_.calendar-date]:!text-white" data-date="${day}" onclick="selectDate(${day})">
-              <span class="calendar-date text-3xl font-bold aspect-square w-full max-w-[60%] flex text-center justify-center items-center rounded-full">${day}</span>
-              <div class="calendar-count text-lg mt-3  text-[#666666] px-1 rounded-full font-regular">
-                ${hasEvents ? `${eventCount}` : "0"}
-                
-                개</div>
+            <div class="relative ${dayClass} [&.active_.count-point]:hidden [&.active_.calendar-date]:bg-[#613489] [&.active_.calendar-date]:!text-white" data-date="${day}" onclick="selectDate(${day})">
+              <span class="calendar-date text-md sm:text-xl lg:text-3xl font-bold aspect-square w-full  max-w-7 sm:max-w-[60%] flex text-center justify-center items-center rounded-full">${day}</span>
+              <div class="calendar-count text-xs hidden sm:block md:text-lg mt-1 md:mt-3  text-[#666666] px-1 rounded-full font-regular">
+                ${hasEvents ? `${eventCount}` : "0"}개
+              </div>
+               ${
+                 hasEvents
+                   ? `<div class="w-1.5 h-1.5 bg-[#603389] rounded-full absolute bottom-1 count-point sm:hidden"></div>`
+                   : ""
+               }
             </div>
+             
           `;
         }
 
@@ -809,7 +838,7 @@
             '<div class="col-span-full text-center py-8 text-gray-500">해당 조건에 맞는 행사가 없습니다.</div>';
         } else {
           itemsList.innerHTML = filteredItems
-            .map((item) => createItemCard(item))
+            .map((item, i) => createItemCard(item, i))
             .join("");
         }
       }
@@ -851,21 +880,36 @@
         updateUI(true); // 카테고리 재생성 건너뛰기
       }
 
+      function shiwolItemImage(index) {
+        const items = [
+          { image: "/shiwol/images/shiwol-icon-01.png", position: "left" },
+          { image: "/shiwol/images/shiwol-icon-02.png", position: "right" },
+          { image: "/shiwol/images/shiwol-icon-03.png", position: "left" },
+          { image: "/shiwol/images/shiwol-icon-04.png", position: "right" },
+          { image: "/shiwol/images/shiwol-icon-05.png", position: "left" },
+          { image: "/shiwol/images/shiwol-icon-06.png", position: "right" },
+        ];
+        return { image: items[index].image, position: items[index].position };
+      }
+
       // 아이템 카드 생성 함수
-      function createItemCard(item) {
+      function createItemCard(item, i) {
         const itemPosition = item.position;
         const hasLinks = item.pageLink || item.buyLink;
+
+        console.log(shiwolItemImage(i));
+
         const linksHTML = hasLinks
           ? `
-          <div class="mt-4 flex gap-2 ">
+          <div class="flex gap-2 ">
             ${
               item.pageLink
-                ? `<a href="${item.pageLink}" target="_blank" class="flex-1 bg-[#613489] text-white flex justify-center rounded-full gap-4 leading-none text-center font-bold transition-colors min-w-max px-6 py-5">홈페이지 바로가기<img class="w-4 min-w-4 h-4" src="/shiwol/images/et-link-white.png"> </a>`
+                ? `<a href="${item.pageLink}" target="_blank" class="flex-1 bg-[#613489] text-white flex justify-center rounded-full gap-4 leading-none text-center font-bold transition-colors min-w-max py-4 px-5 sm:px-6 sm:py-5 text-sm sm:text-md">홈페이지 바로가기<img class="w-4 min-w-4 h-4" src="/shiwol/images/et-link-white.png"> </a>`
                 : ""
             }
             ${
               item.buyLink
-                ? `<a href="${item.buyLink}" target="_blank" class="flex-1 bg-green-600 text-[#613489] bg-white flex justify-center rounded-full gap-4 leading-none text-center font-bold  transition-colors min-w-max px-6 py-5">티켓구매<img class="w-4 min-w-4 h-4" src="/shiwol/images/et-link.png"> </a>`
+                ? `<a href="${item.buyLink}" target="_blank" class="flex-1 bg-green-600 text-[#613489] bg-white flex justify-center rounded-full gap-4 leading-none text-center font-bold  transition-colors min-w-max py-4 px-5 sm:px-6 sm:py-5 text-sm sm:text-md">티켓구매<img class="w-4 min-w-4 h-4" src="/shiwol/images/et-link.png"> </a>`
                 : ""
             }
           </div>
@@ -873,12 +917,19 @@
           : "";
 
         return `
-          <div class="item-card relative overflow-hidden transition-shadow duration-200">
+          <div class="item-card relative  transition-shadow duration-200">
             <img src="${item.image}" alt="${item.title}" class="w-full "/>
-            <div class="p-4 absolute ${
+            <div class="mt-2 md:absolute ${
               itemPosition === "left" ? "left-contents" : "right-contents"
             }">
               ${linksHTML}
+            </div>
+            <div class="item-card-deco absolute ${
+              shiwolItemImage(i).position === "left"
+                ? "left-[-4%] top-[-10%] sm:bottom-[-10%]"
+                : "right-[-4%] top-[-10%]"
+            }  w-[16.66667%]">
+              <img src="${shiwolItemImage(i).image}" alt="" />
             </div>
           </div>
         `;
@@ -905,8 +956,8 @@
         regionTabs.innerHTML = regions
           .map(
             (region) => `
-          <button class="region-tab cursor-pointer px-4 py-8 rounded-lg border-1 border-[#603389] font-bold text-2xl bg-white text-[#67308E] opacity-40
-            hover:opacity-100 transition-all duration-200 whitespace-nowrap [&.active]:opacity-100 [&.active]:border-2"
+          <button class="region-tab cursor-pointer px-2 sm:px-4 py-4 sm:py-5 md:py-8 rounded-lg border-1 border-[#603389] font-bold text-md sm:text-xl lg:text-3xl bg-white text-[#67308E] opacity-40
+            hover:opacity-100 transition-all duration-200 whitespace-nowrap [&.active]:opacity-100 [&.active]:border-1 [&.active]:outline-2 outline-[$603389]"
             data-region="${region}" onclick="selectRegion('${region}')">
             ${region}
           </button>
@@ -926,16 +977,18 @@
         categoryGrid.innerHTML = availableCategories
           .map(
             (category, index) => `
-          <div class="swiper-slide">
+          <div class="swiper-slide pt-1 !w-[80px] sm:!w-[120px] lg:!w-[150px] mr-2 sm:mr-4 lg:mr-6">
             <div class="category-item ${
               index === 0 ? "active" : ""
-            }" onclick="selectCategory('${category.name}')">
-              <div class="relative aspect-[150/200] overflow-hidden rounded-full border-4 border-white transition-all duration-200 group">
+            } [&.active_.category-item-image]:border-[#67308E]" onclick="selectCategory('${
+              category.name
+            }')">
+              <div class="category-item-image relative aspect-[150/200] overflow-hidden rounded-full border-4 border-white transition-all duration-200 group">
                 <img src="${category.image}" alt="${
               category.name
             }" class="object-cover w-full h-full" />
               </div>
-              <p class="text-3xl font-bold text-[#67308E] text-center mt-5">${
+              <p class="text-lg sm:text-xl lg:text-3xl font-bold text-[#67308E] text-center mt-2 sm:mt-5">${
                 category.name
               }</p>
             </div>
@@ -951,7 +1004,6 @@
       function initCategorySwiper() {
         new Swiper(".categorySwiper", {
           slidesPerView: "auto",
-          spaceBetween: 24,
           freeMode: true,
           grabCursor: true,
         });
