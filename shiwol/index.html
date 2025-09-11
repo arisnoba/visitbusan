@@ -7,7 +7,11 @@
 		<link rel="preconnect" href="https://fonts.googleapis.com" />
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 		<link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet" />
+
+		<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
 	</head>
+
 	<body>
 		<style>
 			.shiwol {
@@ -58,7 +62,7 @@
 				height: 100%;
 				border: 20px solid transparent; /* 보더 두께와 공간 확보 */
 				border-image-source: url('/shiwol/images/border-p-h.png'); /* 보더로 사용할 이미지 */
-				border-image-slice: 30; /* 잘라낼 기준 (이미지 안쪽 여백) */
+				border-image-slice: 20; /* 잘라낼 기준 (이미지 안쪽 여백) */
 				border-image-repeat: repeat; /* stretch | repeat | round */
 				pointer-events: none;
 			}
@@ -115,18 +119,18 @@
 			.calendar-weekdays {
 				font-family: 'Jua', sans-serif;
 				font-weight: 400;
-				font-size: 24px;
 			}
 			@media all and (max-width: 767px) {
 				.left-contents,
 				.right-contents {
 					transform: none;
 				}
-				.calendar-weekdays {
-					font-size: 20px;
+				.calendar-grid {
+					border-radius: 20px;
 				}
 			}
 		</style>
+
 		<div class="shiwol overflow-hidden">
 			<div class="shiwol-hero">
 				<picture class="relative block left-[50%] -translate-x-1/2 w-full min-w-[768px] md:min-w-[1300px]">
@@ -178,8 +182,6 @@
 			</div>
 		</div>
 
-		<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
 		<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 
 		<script>
@@ -638,7 +640,7 @@
 				const daysInMonth = new Date(currentYear, 8 + 1, 0).getDate(); // 9월의 일수
 
 				let calendarHTML = `
-<div class="calendar-weekdays grid grid-cols-7 gap-2 bg-[#FFF5E5]">
+<div class="calendar-weekdays text-md sm:text-xl lg:text-3xl grid grid-cols-7  bg-[#FFF5E5]">
   <div class="text-center font-bold text-red-500 !py-2">일</div>
   <div class="text-center font-bold !py-2">월</div>
   <div class="text-center font-bold !py-2">화</div>
