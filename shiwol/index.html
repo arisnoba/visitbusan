@@ -170,7 +170,13 @@
 		<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 
 		<script>
-			console.log('Script started');
+			// 시월축제 설정 상수
+			const SHIWOL_CONFIG = {
+				YEAR: 2025,
+				MONTH: 9, // 9월 (0 기반 인덱스로는 8)
+				MONTH_INDEX: 8, // JavaScript Date 객체용
+				END_DATE: 21, // 9월 21일
+			};
 
 			// 시월축제 데이터
 			const shiwolData = [
@@ -505,14 +511,13 @@
 			// 상태 관리
 			function getDefaultDate() {
 				const today = new Date();
-				const currentYear = today.getFullYear();
-				const shiwolEndDate = new Date(2025, 8, 21); // 2025년 9월 21일
+				const shiwolEndDate = new Date(SHIWOL_CONFIG.YEAR, SHIWOL_CONFIG.MONTH_INDEX, SHIWOL_CONFIG.END_DATE);
 
-				// 25년 9월 21일 이후에는 오늘 날짜, 그 전에는 9월 21일
+				// 시월축제 종료일 이후에는 오늘 날짜, 그 전에는 축제 시작일
 				if (today > shiwolEndDate) {
 					return today.getDate();
 				} else {
-					return 21; // 9월 21일
+					return SHIWOL_CONFIG.END_DATE;
 				}
 			}
 
@@ -522,7 +527,6 @@
 				category: '전체',
 			};
 
-			console.log('State initialized:', state);
 
 			// 유틸리티
 			function isRegionMatch(itemRegion, selectedRegion) {
@@ -587,15 +591,14 @@
 
 			// 달력 생성 함수
 			function createCalendar() {
-				console.log('createCalendar called, state:', state);
 				const calendar = document.getElementById('calendar');
 				const today = new Date();
 				const currentMonth = today.getMonth();
 				const currentYear = today.getFullYear();
 
-				// 9월 달력 생성 (시월 축제는 9월에 시작)
-				const firstDay = new Date(currentYear, 8, 1).getDay(); // 9월 1일의 요일
-				const daysInMonth = new Date(currentYear, 8 + 1, 0).getDate(); // 9월의 일수
+				// 시월축제 달력 생성
+				const firstDay = new Date(currentYear, SHIWOL_CONFIG.MONTH_INDEX, 1).getDay(); // 월 첫날의 요일
+				const daysInMonth = new Date(currentYear, SHIWOL_CONFIG.MONTH_INDEX + 1, 0).getDate(); // 월의 총 일수
 
 				let calendarHTML = `
 <div class="calendar-weekdays text-md sm:text-xl lg:text-3xl grid grid-cols-7  bg-[#FFF5E5]">
@@ -621,7 +624,7 @@
 					const dayEvents = shiwolData.filter(item => isDateMatch(item.date, day));
 					const eventCount = dayEvents.length;
 					const hasEvents = eventCount > 0;
-					const isToday = day === today.getDate() && currentMonth === 8;
+					const isToday = day === today.getDate() && currentMonth === SHIWOL_CONFIG.MONTH_INDEX;
 					const isSelected = day === state.date;
 
 					const dayClass = `calendar-day !py-3 md:!py-5 !px-1 md:!px-2 flex flex-col items-center justify-center border-r-1 border-b-1 border-[#eee]  transition-all duration-200 ${
@@ -677,14 +680,14 @@
 
 			// 선택 함수들
 			function selectDate(date) {
+				// 이벤트가 없는 날짜는 선택할 수 없음
+				if (!hasEventsOnDate(date)) {
+					return;
+				}
+
 				state.date = date;
 				state.region = '전체'; // 달력 클릭 시 지역을 전체로 리셋
 				state.category = '전체'; // 달력 클릭 시 카테고리도 전체로 리셋
-
-				if (!hasEventsOnDate(date)) {
-					// alert("선택한 날짜에는 행사가 없습니다.");
-					return;
-				}
 
 				// 지역 탭을 새로 생성
 				createRegionTabs();
@@ -700,11 +703,7 @@
 
 			function selectCategory(category) {
 				state.category = category;
-
-				document.querySelectorAll('.category-item').forEach(item => item.classList.remove('active'));
-				document.querySelector(`[onclick="selectCategory('${category}')"]`)?.classList.add('active');
-
-				updateUI(true); // 카테고리 재생성 건너뛰기
+				updateUI(true); // 카테고리 재생성 건너뛰기 (active 처리는 updateUI에서 수행)
 			}
 
 			function shiwolItemImage(index) {
@@ -777,7 +776,6 @@
 				const itemPosition = item.position;
 				const hasLinks = item.pageLink || item.buyLink;
 
-				console.log(shiwolItemImage(i));
 
 				const linksHTML = hasLinks
 					? `
