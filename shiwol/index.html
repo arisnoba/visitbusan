@@ -669,7 +669,7 @@
 				const filteredItems = getFilteredItems();
 
 				if (filteredItems.length === 0) {
-					itemsList.innerHTML = '';
+					itemsList.innerHTML = createEmptyState();
 				} else {
 					itemsList.innerHTML = filteredItems.map((item, i) => createItemCard(item, i)).join('');
 				}
@@ -721,6 +721,55 @@
 					image: items[safeIndex].image,
 					position: items[safeIndex].position,
 				};
+			}
+
+			// 빈 상태 UI 생성 함수
+			function createEmptyState() {
+				return `
+<div class="empty-state flex flex-col items-center justify-center min-h-[400px] text-center py-20">
+	<div class="empty-icon mb-6">
+		<img src="/shiwol/images/shiwol-icon-01.png" alt="빈 상태" class="w-24 h-24 mx-auto " />
+	</div>
+	<div class="empty-content">
+		<h3 class="text-2xl sm:text-3xl font-bold text-[#67308E] mb-4">선택하신 조건에 해당하는<br>행사가 없습니다</h3>
+		<p class="text-lg sm:text-xl text-gray-600 mb-6">다른 날짜, 지역 또는 카테고리를<br>선택해보세요</p>
+		<div class="empty-actions flex flex-col sm:flex-row gap-3 justify-center">
+			<button onclick="resetFilters()" class="px-6 py-3 bg-[#67308E] text-white rounded-full font-bold hover:bg-[#533170] transition-colors">
+				전체 보기
+			</button>
+			<button onclick="goToToday()" class="px-6 py-3 border-2 border-[#67308E] text-[#67308E] rounded-full font-bold hover:bg-[#67308E] hover:text-white transition-colors">
+				오늘 행사 보기
+			</button>
+		</div>
+	</div>
+</div>
+`;
+			}
+
+			// 필터 초기화 함수
+			function resetFilters() {
+				state.region = '전체';
+				state.category = '전체';
+				updateUI();
+			}
+
+			// 오늘 날짜로 이동 함수
+			function goToToday() {
+				const today = new Date();
+				const todayDate = today.getDate();
+
+				if (hasEventsOnDate(todayDate)) {
+					selectDate(todayDate);
+				} else {
+					// 오늘 행사가 없으면 가장 가까운 행사 날짜로 이동
+					const eventDates = shiwolData.flatMap(item => (Array.isArray(item.date) ? item.date : [item.date])).filter(date => typeof date === 'number');
+
+					if (eventDates.length > 0) {
+						const sortedDates = [...new Set(eventDates)].sort((a, b) => a - b);
+						const nearestDate = sortedDates.find(date => date >= todayDate) || sortedDates[sortedDates.length - 1];
+						selectDate(nearestDate);
+					}
+				}
 			}
 
 			// 아이템 카드 생성 함수
