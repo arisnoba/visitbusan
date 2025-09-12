@@ -94,14 +94,14 @@
 				transform: translateY(-2px);
 			}
 			.left-contents {
-				bottom: 15%;
-				left: 28%;
-				transform: translate(-50%);
+				bottom: 13%;
+				right: 10%;
+				/* transform: translate(-50%); */
 			}
 			.right-contents {
-				bottom: 15%;
-				right: 28%;
-				transform: translate(50%);
+				bottom: 13%;
+				right: 10%;
+				/* transform: translate(50%); */
 			}
 			.calendar-weekdays {
 				font-family: 'Jua', sans-serif;
@@ -527,7 +527,6 @@
 				category: '전체',
 			};
 
-
 			// 유틸리티
 			function isRegionMatch(itemRegion, selectedRegion) {
 				if (selectedRegion === '전체') return true;
@@ -776,10 +775,9 @@
 				const itemPosition = item.position;
 				const hasLinks = item.pageLink || item.buyLink;
 
-
 				const linksHTML = hasLinks
 					? `
-<div class="flex gap-2 ">
+<div class="flex gap-2 flex-col">
   ${
 		item.pageLink
 			? `<a href="${item.pageLink}" target="_blank" class="items-center flex-1 bg-[#613489] text-white flex justify-center rounded-full gap-4 leading-none text-center font-bold transition-colors min-w-max !py-4 !px-5 sm:!px-6 sm:!py-5 text-sm sm:text-md">홈페이지 바로가기<img class="w-4 min-w-4 h-4" src="/shiwol/images/et-link-white.png"> </a>`
