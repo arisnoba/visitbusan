@@ -789,7 +789,7 @@
 
 				const linksHTML = hasLinks
 					? `
-<div class="flex gap-2 flex-col">
+<div class="flex gap-2 lg:flex-col">
   ${
 		item.pageLink
 			? `<a href="${item.pageLink}" target="_blank" class="items-center flex-1 bg-[#613489] text-white flex justify-center rounded-full gap-4 leading-none text-center font-bold transition-colors min-w-max !py-4 !px-5 sm:!px-6 sm:!py-5 text-sm sm:text-md">홈페이지 바로가기<img class="w-4 min-w-4 h-4" src="/shiwol/images/et-link-white.png"> </a>`
@@ -814,7 +814,7 @@
        class="w-full" 
        onload="handleImageLoad('${cardId}')"
        onerror="handleImageError('${cardId}')" />
-  <div class="!mt-2 md:absolute ${itemPosition === 'left' ? 'left-contents' : 'right-contents'}">
+  <div class="!mt-2 lg:absolute ${itemPosition === 'left' ? 'left-contents' : 'right-contents'}">
     ${linksHTML}
   </div>
   <div class="item-card-deco absolute ${shiwolItemImage(i).position === 'left' ? 'left-[-4%] top-[-10%] sm:bottom-[-10%]' : 'right-[-4%] top-[-10%]'}  w-[16.66667%]">
