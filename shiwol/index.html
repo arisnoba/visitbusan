@@ -94,13 +94,13 @@
 				transform: translateY(-2px);
 			}
 			.left-contents {
-				bottom: 13%;
-				right: 10%;
+				bottom: 50px;
+				left: 22%;
 				/* transform: translate(-50%); */
 			}
 			.right-contents {
-				bottom: 13%;
-				right: 10%;
+				bottom: 50px;
+				left: 22%;
 				/* transform: translate(50%); */
 			}
 			.calendar-weekdays {
@@ -332,7 +332,7 @@
 						'2025 월드 크리에이터 페스티벌은 9월 27~28일 열리며, 세계 각국의 크리에이터들이 참여하는 글로벌 종합 축제입니다. 콘텐츠 전시, 팬미팅, 공연, 시상식 등 다양한 프로그램을 통해 크리에이터와 팬이 교류하고 최신 트렌드를 경험할 수 있습니다.',
 					pageLink: 'https://www.wcfbusan.kr/?fbclid=IwZXh0bgNhZW0CMTAAAR241mmdbGLn532YVJckg7vqHGlS6MgHrZllC7PaUko6r9Z9zdalEV9hem8_aem_m927Fb4O08CrnSSrgdzSwg',
 					buyLink: '',
-					region: '부산 전역',
+					region: '부산진구',
 					image: '/shiwol/images/event-12.png',
 					position: 'left',
 				},
@@ -789,7 +789,7 @@
 
 				const linksHTML = hasLinks
 					? `
-<div class="flex gap-2 lg:flex-col">
+<div class="flex gap-2">
   ${
 		item.pageLink
 			? `<a href="${item.pageLink}" target="_blank" class="items-center flex-1 bg-[#613489] text-white flex justify-center rounded-full gap-4 leading-none text-center font-bold transition-colors min-w-max !py-4 !px-5 sm:!px-6 sm:!py-5 text-sm sm:text-md">홈페이지 바로가기<img class="w-4 min-w-4 h-4" src="/shiwol/images/et-link-white.png"> </a>`
