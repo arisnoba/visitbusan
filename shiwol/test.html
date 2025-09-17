@@ -136,6 +136,436 @@
 			outline-width: 1px;
 		}
 	}
+
+	/* Calendar 스타일 - 동적 생성 요소를 위한 직접 정의 */
+	.calendar-day {
+		position: relative;
+		cursor: pointer;
+		border-right: 1px solid #eee;
+		border-bottom: 1px solid #eee;
+		/* height: 4rem; */
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: flex-start;
+		padding: 16px;
+	}
+
+	.calendar-day:hover {
+		background-color: #f3f4f6;
+	}
+
+	.calendar-day.today {
+		background-color: rgba(214, 174, 252, 0.782);
+		color: white;
+	}
+
+	.calendar-day.active {
+		background-color: #603389;
+		color: white;
+	}
+	.calendar-day.active .calendar-count {
+		color: white;
+	}
+
+	.calendar-day.no-events {
+		cursor: not-allowed;
+		opacity: 0.5;
+	}
+
+	.calendar-date {
+		font-weight: bold;
+
+		width: 100%;
+		max-width: 2rem;
+		display: flex;
+		text-align: center;
+		justify-content: center;
+		align-items: center;
+		border-radius: 50%;
+		font-size: 14px;
+	}
+
+	@media (min-width: 640px) {
+		.calendar-date {
+			font-size: 20px;
+			max-width: 60%;
+		}
+	}
+
+	@media (min-width: 1024px) {
+		.calendar-date {
+			font-size: 24px;
+		}
+	}
+
+	.calendar-count {
+		font-size: 12px;
+		display: none;
+		margin-top: 4px;
+		color: #666666;
+		padding: 0 4px;
+		border-radius: 50%;
+		font-weight: normal;
+	}
+
+	@media (min-width: 640px) {
+		.calendar-count {
+			display: block;
+		}
+	}
+
+	@media (min-width: 768px) {
+		.calendar-count {
+			font-size: 18px;
+			margin-top: 12px;
+		}
+	}
+
+	.count-point {
+		width: 6px;
+		height: 6px;
+		background-color: #603389;
+		border-radius: 50%;
+		position: absolute;
+		bottom: 4px;
+		left: 50%;
+		transform: translateX(-50%);
+	}
+
+	@media (min-width: 640px) {
+		.count-point {
+			display: none;
+		}
+	}
+
+	/* 버튼 스타일 - 동적 생성 요소를 위한 직접 정의 */
+	.item-buttons {
+		display: flex;
+		gap: 8px;
+		justify-content: center;
+	}
+
+	.btn-primary,
+	.btn-secondary {
+		display: flex;
+		align-items: center;
+		flex: 1;
+		justify-content: center;
+		border-radius: 50px;
+		gap: 16px;
+		line-height: 1;
+		text-align: center;
+		font-weight: bold;
+		transition: all 0.2s;
+		min-width: max-content;
+		padding: 16px 20px;
+		font-size: 14px;
+		text-decoration: none;
+	}
+
+	@media (min-width: 640px) {
+		.btn-primary,
+		.btn-secondary {
+			padding: 20px 24px;
+			font-size: 16px;
+		}
+	}
+
+	.btn-primary {
+		background-color: #613489;
+		color: white;
+	}
+
+	.btn-primary:hover {
+		background-color: #533170;
+	}
+
+	.btn-secondary {
+		background-color: white;
+		color: #613489;
+		border: 1px solid #603389;
+	}
+
+	@media (min-width: 640px) {
+		.btn-secondary {
+			border-width: 2px;
+		}
+	}
+
+	.btn-free {
+		display: flex;
+		align-items: center;
+		flex: 1;
+		justify-content: center;
+		border-radius: 50px;
+		gap: 16px;
+		line-height: 1;
+		text-align: center;
+		font-weight: bold;
+		min-width: max-content;
+		padding: 16px 20px;
+		font-size: 14px;
+		background-color: white;
+		color: #613489;
+		border: 1px solid #603389;
+		cursor: default;
+	}
+
+	@media (min-width: 640px) {
+		.btn-free {
+			padding: 20px 24px;
+			font-size: 16px;
+			border-width: 2px;
+		}
+	}
+
+	.btn-icon {
+		width: 16px;
+		min-width: 16px;
+		height: 16px;
+	}
+
+	/* 필터 버튼 스타일 */
+	.filter-buttons {
+		display: flex;
+		gap: 12px;
+		justify-content: center;
+		flex-wrap: wrap;
+	}
+
+	.btn-filter-primary,
+	.btn-filter-secondary {
+		padding: 12px 24px;
+		border-radius: 50px;
+		font-weight: bold;
+		transition: all 0.2s;
+		cursor: pointer;
+		border: none;
+		font-size: 16px;
+	}
+
+	.btn-filter-primary {
+		background-color: #67308e;
+		color: white;
+	}
+
+	.btn-filter-primary:hover {
+		background-color: #533170;
+	}
+
+	.btn-filter-secondary {
+		background-color: transparent;
+		color: #67308e;
+		border: 2px solid #67308e;
+	}
+
+	.btn-filter-secondary:hover {
+		background-color: #67308e;
+		color: white;
+	}
+
+	/* 레이아웃 및 컨테이너 스타일 */
+	.shiwol-container {
+		padding: 0 16px;
+		max-width: 1200px;
+		margin: 0 auto;
+		min-height: 100vh;
+	}
+
+	@media (min-width: 1024px) {
+		.shiwol-container {
+			padding: 0;
+		}
+	}
+
+	.calendar-section,
+	.category-section {
+		margin-bottom: 40px;
+	}
+
+	@media (min-width: 640px) {
+		.calendar-section,
+		.category-section {
+			margin-bottom: 80px;
+		}
+	}
+
+	.items-section {
+		min-height: 100vh;
+	}
+
+	/* 그리드 레이아웃 */
+	.region-tabs {
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+		gap: 8px;
+	}
+
+	@media (min-width: 640px) {
+		.region-tabs {
+			grid-template-columns: repeat(4, 1fr);
+		}
+	}
+
+	@media (min-width: 768px) {
+		.region-tabs {
+			grid-template-columns: repeat(8, 1fr);
+		}
+	}
+
+	.category-grid {
+		display: grid;
+		grid-template-columns: repeat(5, 1fr);
+		gap: 12px;
+	}
+
+	@media (min-width: 640px) {
+		.category-grid {
+			gap: 16px;
+		}
+	}
+
+	@media (min-width: 768px) {
+		.category-grid {
+			grid-template-columns: repeat(6, 1fr);
+		}
+	}
+
+	@media (min-width: 1024px) {
+		.category-grid {
+			grid-template-columns: repeat(8, 1fr);
+		}
+	}
+
+	.items-grid {
+		display: grid;
+		grid-template-columns: 1fr;
+		gap: 40px;
+	}
+
+	@media (min-width: 768px) {
+		.items-grid {
+			gap: 56px;
+		}
+	}
+
+	.calendar-weekdays {
+		display: grid;
+		grid-template-columns: repeat(7, 1fr);
+		background-color: #fff5e5;
+		font-size: 14px;
+	}
+
+	@media (min-width: 640px) {
+		.calendar-weekdays {
+			font-size: 20px;
+		}
+	}
+
+	@media (min-width: 1024px) {
+		.calendar-weekdays {
+			font-size: 24px;
+		}
+	}
+
+	.weekday {
+		text-align: center;
+		font-weight: bold;
+		padding: 8px 0;
+	}
+
+	.weekday.sunday {
+		color: #ef4444;
+	}
+
+	.weekday.saturday {
+		color: #3b82f6;
+	}
+
+	/* Empty State 스타일 */
+	.empty-state {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		min-height: 400px;
+		text-align: center;
+		padding: 80px 0;
+	}
+
+	.empty-icon {
+		width: 96px;
+		height: 96px;
+		margin: 0 auto;
+	}
+
+	.empty-title {
+		font-size: 24px;
+		font-weight: bold;
+		color: #67308e;
+		margin-bottom: 16px;
+	}
+
+	@media (min-width: 640px) {
+		.empty-title {
+			font-size: 30px;
+		}
+	}
+
+	.empty-description {
+		font-size: 18px;
+		color: #6b7280;
+		margin-bottom: 24px;
+	}
+
+	@media (min-width: 640px) {
+		.empty-description {
+			font-size: 20px;
+		}
+	}
+
+	/* Footer 스타일 */
+	.shiwol-footer {
+		position: relative;
+		aspect-ratio: 1920/796;
+		display: flex;
+		align-items: flex-end;
+	}
+
+	.footer-content {
+		max-width: 1000px;
+		margin-left: auto;
+	}
+
+	.footer-content img {
+		width: 100%;
+	}
+
+	/* Hero 섹션 */
+	.hero-picture {
+		position: relative;
+		display: block;
+		left: 50%;
+		transform: translateX(-50%);
+		width: 100%;
+		min-width: 768px;
+	}
+
+	@media (min-width: 768px) {
+		.hero-picture {
+			min-width: 1300px;
+		}
+	}
+
+	.hero-picture img {
+		width: 100%;
+	}
+
+	.shiwol-body {
+		position: relative;
+		margin-top: -20%;
+	}
 	.right-contents {
 		bottom: 50px;
 		left: 7%;
@@ -159,49 +589,49 @@
 	}
 </style>
 
-<div class="shiwol overflow-hidden">
+<div class="shiwol">
 	<div class="shiwol-hero">
-		<picture class="relative block left-[50%] -translate-x-1/2 w-full min-w-[768px] md:min-w-[1300px]">
+		<picture class="hero-picture">
 			<img class="duration-100 ease-in-out" src="https://visitbusan.net/upload_data/board_data/BBS_0000014/175801486971910.jpeg" alt="" />
 		</picture>
 		<div class="shiwol-deco">
 			<img src="https://visitbusan.net/upload_data/board_data/BBS_0000014/175801046770355.png" alt="" />
 		</div>
 	</div>
-	<div class="shiwol-body relative !-mt-[20%]">
-		<div class="shiwol-container !px-4 lg:!px-0 max-w-[1200px] !mx-auto min-h-[100svh]">
+	<div class="shiwol-body">
+		<div class="shiwol-container">
 			<!-- 달력 (1뎁스) -->
-			<div class="calendar-section !mb-10 sm:!mb-20">
-				<div class="calendar-grid bg-white rounded-lg" id="calendar">
+			<div class="calendar-section">
+				<div class="calendar-grid" id="calendar" style="background-color: white; border-radius: 8px">
 					<!-- 달력이 여기에 생성됩니다 -->
 				</div>
 			</div>
 
 			<!-- 지역 선택 (2뎁스) - 항상 표시 -->
 			<div class="region-section !mb-10" id="regionSection">
-				<div class="region-tabs grid grid-cols-3 sm:grid-cols-4 md:grid-cols-8 gap-2" id="regionTabs">
+				<div class="region-tabs" id="regionTabs">
 					<!-- 지역 탭이 여기에 생성됩니다 -->
 				</div>
 			</div>
 
 			<!-- 카테고리 선택 (3뎁스) - 그리드 -->
-			<div class="category-section !mb-10 sm:!mb-20" id="categorySection">
-				<div class="category-grid grid grid-cols-5 md:grid-cols-6 lg:grid-cols-8 gap-3 sm:gap-4" id="categoryGrid">
+			<div class="category-section" id="categorySection">
+				<div class="category-grid" id="categoryGrid">
 					<!-- 카테고리가 여기에 생성됩니다 -->
 				</div>
 			</div>
 
 			<!-- 아이템 목록 -->
-			<div class="items-section min-h-[100vh]" id="itemsSection">
-				<div class="items-grid grid grid-cols-1 gap-10 md:gap-14" id="itemsList">
+			<div class="items-section" id="itemsSection">
+				<div class="items-grid" id="itemsList">
 					<!-- 아이템이 여기에 생성됩니다 -->
 				</div>
 			</div>
 		</div>
 	</div>
-	<div class="shiwol-footer relative aspect-[1920/796] flex items-end">
-		<div class="max-w-[1000px] !ml-auto">
-			<img class="w-full" src="https://visitbusan.net/upload_data/board_data/BBS_0000014/175801119064976.png" alt="" />
+	<div class="shiwol-footer">
+		<div class="footer-content">
+			<img src="https://visitbusan.net/upload_data/board_data/BBS_0000014/175801119064976.png" alt="" />
 		</div>
 	</div>
 </div>
@@ -711,25 +1141,21 @@
 
 	// 빈 상태 UI 생성 함수
 	function createEmptyState() {
-		return `
-				<div class="empty-state flex flex-col items-center justify-center min-h-[400px] text-center py-20">
-					<div class="empty-icon mb-6">
-						<img src="https://visitbusan.net/upload_data/board_data/BBS_0000014/175801119077832.png" alt="빈 상태" class="w-24 h-24 mx-auto " />
-					</div>
-					<div class="empty-content">
-						<h3 class="text-2xl sm:text-3xl font-bold text-[#67308E] mb-4">선택하신 조건에 해당하는<br>행사가 없습니다</h3>
-						<p class="text-lg sm:text-xl text-gray-600 mb-6">다른 날짜, 지역 또는 카테고리를<br>선택해보세요</p>
-						<div class="empty-actions flex flex-col sm:flex-row gap-3 justify-center">
-							<button onclick="resetFilters()" class="px-6 py-3 bg-[#67308E] text-white rounded-full font-bold hover:bg-[#533170] transition-colors">
-								전체 보기
-							</button>
-							<button onclick="goToToday()" class="px-6 py-3 border-2 border-[#67308E] text-[#67308E] rounded-full font-bold hover:bg-[#67308E] hover:text-white transition-colors">
-								오늘 행사 보기
-							</button>
-						</div>
-					</div>
-				</div>
-				`;
+		return (
+			'<div class="empty-state">' +
+			'<div class="empty-icon">' +
+			'<img src="https://visitbusan.net/upload_data/board_data/BBS_0000014/175801119077832.png" alt="빈 상태" class="empty-icon" />' +
+			'</div>' +
+			'<div class="empty-content">' +
+			'<h3 class="empty-title">선택하신 조건에 해당하는<br>행사가 없습니다</h3>' +
+			'<p class="empty-description">다른 날짜, 지역 또는 카테고리를<br>선택해보세요</p>' +
+			'<div class="filter-buttons">' +
+			'<button onclick="resetFilters()" class="btn-filter-primary">전체 보기</button>' +
+			'<button onclick="goToToday()" class="btn-filter-secondary">오늘 행사 보기</button>' +
+			'</div>' +
+			'</div>' +
+			'</div>'
+		);
 	}
 
 	// 필터 초기화 함수
@@ -794,16 +1220,16 @@
 		const daysInMonth = new Date(currentYear, SHIWOL_CONFIG.MONTH_INDEX + 1, 0).getDate(); // 월의 총 일수
 
 		let calendarHTML = `
-					<div class="calendar-weekdays text-md sm:text-xl lg:text-3xl grid grid-cols-7 bg-[#FFF5E5]">
-						<div class="text-center font-bold text-red-500 py-2">일</div>
-						<div class="text-center font-bold py-2">월</div>
-						<div class="text-center font-bold py-2">화</div>
-						<div class="text-center font-bold py-2">수</div>
-						<div class="text-center font-bold py-2">목</div>
-						<div class="text-center font-bold py-2">금</div>
-						<div class="text-center font-bold text-blue-500 py-2">토</div>
+					<div class="calendar-weekdays">
+						<div class="weekday sunday">일</div>
+						<div class="weekday">월</div>
+						<div class="weekday">화</div>
+						<div class="weekday">수</div>
+						<div class="weekday">목</div>
+						<div class="weekday">금</div>
+						<div class="weekday saturday">토</div>
 					</div>
-					<div class="calendar-days grid grid-cols-7">
+					<div class="calendar-days" style="display: grid; grid-template-columns: repeat(7, 1fr);">
 				`;
 
 		// 빈 칸 추가 (첫 주의 빈 날짜들)
@@ -821,13 +1247,11 @@
 			const isSelected = day === state.date;
 
 			// 기본 클래스
-			let dayClass = 'calendar-day py-3 md:py-5 px-1 md:px-2 flex flex-col items-center justify-center border-r border-b border-[#eee] transition-all duration-200';
+			let dayClass = '';
 
 			// 조건부 클래스 추가
-			if (hasEvents) {
-				dayClass += ' hover:bg-gray-100 cursor-pointer';
-			} else {
-				dayClass += ' cursor-not-allowed';
+			if (!hasEvents) {
+				dayClass += ' no-events';
 			}
 
 			if (isToday) {
@@ -839,23 +1263,23 @@
 			}
 
 			// 조건부 렌더링을 위한 변수
-			const countPoint = hasEvents ? '<div class="w-1.5 h-1.5 bg-[#603389] rounded-full absolute bottom-1 count-point sm:hidden"></div>' : '';
+			const countPoint = hasEvents ? '<div class="count-point"></div>' : '';
 
 			// 이벤트 개수 표시
 			const eventCountText = hasEvents ? eventCount + '개' : '';
 
 			calendarHTML +=
-				'<div class="relative ' +
+				'<div class="calendar-day ' +
 				dayClass +
 				'" data-date="' +
 				day +
 				'" onclick="selectDate(' +
 				day +
 				')">' +
-				'<span class="calendar-date text-md sm:text-xl lg:text-3xl font-bold aspect-square w-full max-w-8 sm:max-w-[60%] flex text-center justify-center items-center rounded-full">' +
+				'<span class="calendar-date">' +
 				day +
 				'</span>' +
-				'<div class="calendar-count text-xs hidden sm:block md:text-lg mt-1 md:mt-3 text-[#666666] px-1 rounded-full font-regular">' +
+				'<div class="calendar-count">' +
 				eventCountText +
 				'</div>' +
 				countPoint +
@@ -864,7 +1288,7 @@
 
 		// 빈 칸 추가 (마지막 주의 빈 날짜들)
 		for (let i = 0; i < 4; i++) {
-			calendarHTML += '<div class="border-r border-b border-[#eee] h-16"></div>';
+			calendarHTML += '<div class="calendar-day"></div>';
 		}
 
 		calendarHTML += '</div>';
@@ -887,23 +1311,22 @@
 				pageLinkHTML =
 					'<a href="' +
 					item.pageLink +
-					'" target="_blank" class="items-center flex-1 bg-[#613489] text-white flex justify-center rounded-full gap-4 leading-none text-center font-bold transition-colors min-w-max py-4 px-5 sm:px-6 sm:py-5 text-sm sm:text-md">홈페이지 바로가기<img class="w-4 min-w-4 h-4" src="https://visitbusan.net/upload_data/board_data/BBS_0000014/175800936795448.png"> </a>';
+					'" target="_blank" class="btn-primary">홈페이지 바로가기<img class="btn-icon" src="https://visitbusan.net/upload_data/board_data/BBS_0000014/175800936795448.png"> </a>';
 			}
 
 			// 티켓 구매 링크
 			if (item.buyLink && item.buyLink !== '') {
 				if (item.buyLink === '무료행사') {
-					buyLinkHTML =
-						'<div class="items-center flex-1 bg-white text-[#613489] flex justify-center rounded-full gap-4 leading-none border sm:border-2 border-[#603389] text-center font-bold min-w-max py-4 px-5 sm:px-6 sm:py-5 text-sm sm:text-md cursor-default">무료 행사</div>';
+					buyLinkHTML = '<div class="btn-free">무료 행사</div>';
 				} else {
 					buyLinkHTML =
 						'<a href="' +
 						item.buyLink +
-						'" target="_blank" class="items-center flex-1 bg-white text-[#613489] flex justify-center rounded-full gap-4 leading-none text-center font-bold transition-colors border sm:border-2 border-[#603389] min-w-max py-4 px-5 sm:px-6 sm:py-5 text-sm sm:text-md">티켓구매<img class="w-4 min-w-4 h-4" src="https://visitbusan.net/upload_data/board_data/BBS_0000014/175800936795204.png"> </a>';
+						'" target="_blank" class="btn-secondary">티켓구매<img class="btn-icon" src="https://visitbusan.net/upload_data/board_data/BBS_0000014/175800936795204.png"> </a>';
 				}
 			}
 
-			linksHTML = '<div class="flex gap-2 justify-center">' + pageLinkHTML + buyLinkHTML + '</div>';
+			linksHTML = '<div class="item-buttons">' + pageLinkHTML + buyLinkHTML + '</div>';
 		}
 
 		// 고유 ID 생성
