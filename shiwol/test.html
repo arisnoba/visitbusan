@@ -93,6 +93,49 @@
 		justify-content: center;
 		/* transform: translate(-50%); */
 	}
+
+	/* Region Tab 스타일 - 동적 생성 요소를 위한 직접 정의 */
+	.region-tab {
+		cursor: pointer;
+		padding: 8px;
+		border-radius: 8px;
+		border: 1px solid #603389;
+		font-weight: bold;
+		font-size: 18px;
+		background-color: white;
+		color: #67308e;
+		opacity: 0.4;
+		transition: all 0.2s;
+		white-space: nowrap;
+	}
+
+	@media (min-width: 640px) {
+		.region-tab {
+			padding: 12px;
+		}
+	}
+
+	@media (min-width: 768px) {
+		.region-tab {
+			padding: 12px;
+		}
+	}
+
+	.region-tab:hover {
+		opacity: 1;
+	}
+
+	.region-tab.active {
+		opacity: 1;
+		border-width: 1px;
+		outline: 1px solid #603389;
+	}
+
+	@media (min-width: 640px) {
+		.region-tab.active {
+			outline-width: 1px;
+		}
+	}
 	.right-contents {
 		bottom: 50px;
 		left: 7%;
@@ -958,15 +1001,7 @@
 		const buttonHTML = availableRegions
 			.map((region, index) => {
 				console.log('[DEBUG] 처리 중인 region:', region, 'index:', index);
-				return (
-					'<button class="region-tab cursor-pointer px-2 py-2 sm:py-3 md:py-3 rounded-lg border-1 border-[#603389] font-bold text-lg bg-white text-[#67308E] opacity-40 hover:opacity-100 transition-all duration-200 whitespace-nowrap [&.active]:opacity-100 [&.active]:border-1 [&.active]:outline-1 [&.active]:sm:outline-2 outline-[$603389]" data-region="' +
-					region +
-					'" onclick="selectRegion(\'' +
-					region +
-					'\')">' +
-					region +
-					'</button>'
-				);
+				return '<button class="region-tab" data-region="' + region + '" onclick="selectRegion(\'' + region + '\')">' + region + '</button>';
 			})
 			.join('');
 
